@@ -11,106 +11,98 @@ det(mi, my).
 
 nombre(esp, n(X)) --> [X], {n(X,_)}.
 nombre(eng, n(X)) --> [Y], {n(X,Y)}.
+n(hombre, man).
+n(mujer, woman).
+n(manzana, apple).
+n(manzanas, apples).
+n(gato, cat).
+n(raton, mouse).
+n(alumno, student).
+n(universidad, university).
+n(juan, john).
 n(maria, mary).
 n(jose, joseph).
-/*n(hombre).
-n(mujer).
-n(manzana).
-n(manzanas).
-n(gato).
-n(raton).
-n(alumno).
-n(universidad).
-n(juan).
-n(maria).
-n(jose).
-n(hector).
-n(irene).
-n(filosofia).
-n(derecho).
-n(cafe).
-n(mesa).
-n(periodico).
-n(patatas).
-n(cerveza).
-n(paella).
-n(novela).
-n(zumo).
-n(procesador).
-n(textos).
-n(herramienta).
-n(documentos).
-n(raton).
-n(gato).
-n(vecino).
-n(escribir).
-n(rocodromo).
-n(tardes).*/
+n(hector, hector).
+n(irene, irene).
+n(filosofia, philosophy).
+n(derecho, law).
+n(cafe, coffee).
+n(mesa, table).
+n(periodico, newspaper).
+n(patatas, potatoes).
+n(cerveza, beer).
+n(paella, paella).
+n(novela, novel).
+n(zumo, juice).
+n(procesador, processor).
+n(textos, texts).
+n(herramienta, tool).
+n(documentos, documents).
+n(vecino, neighbor).
+n(escribir, writing).
+n(rocodromo, climbing-wall).
+n(tardes, afternoon).
 
 verbo(esp, v(X)) --> [X], {v(X,_)}.
 verbo(eng, v(X)) --> [Y], {v(X,Y)}.
+v(ama, love).
+v(come, eats).
+v(estudia, studies).
+v(bebe, drinks).
 v(es, is).
-/*v(ama).
-v(come).
-v(estudia).
-v(bebe).
-v(es).
-v(toma).
-v(recoge).
-v(lee).
-v(comen).
-v(beben).
-v(prefiere).
-v(canta).
-v(salta).
-v(escala).
-v(sirve).
-v(cazo).
-v(vimos).
-v(era).*/
+v(toma, takes).
+v(recoge, collect).
+v(lee, reeds).
+v(comen, eat).
+v(beben, drink).
+v(prefiere, prefers).
+v(canta, sings).
+v(salta, jumps).
+v(escala, climbs).
+v(sirve, serves).
+v(cazo, hunted).
+v(vimos, saw).
+v(era, was).
 
 adjetivo(esp, adj(X)) --> [X], {adj(X,_)}.
 adjetivo(eng, adj(X)) --> [Y], {adj(X,Y)}.
-adj(moreno, brown).
+adj(roja, red).
+adj(rojas, red).
+adj(negro, black).
+adj(grande, big).
+adj(gris, gray).
+adj(pequeno, little).
 adj(alta, tall).
-/*adj(roja).
-adj(rojas).
-adj(negro).
-adj(grande).
-adj(gris).
-adj(pequeno).
-adj(alta).
-adj(moreno).
-adj(fritas).
-adj(potente).
-adj(lento).
-adj(agil).
-adj(delicado).*/
+adj(moreno, brown).
+adj(fritas, fried).
+adj(potente, powerful).
+adj(lento, slow).
+adj(agil, agile).
+adj(delicado, delicate).
 
 conjuncion(esp, conj(X)) --> [X], {conj(X,_)}.
 conjuncion(eng, conj(X)) --> [Y], {conj(X,Y)}.
 conj(y, and).
-/*conj(e).
-conj(ni).
-conj(pero).
-conj(aunque).*/
+conj(e, and).
+conj(ni, neither).
+conj(pero, but).
+conj(aunque, although).
 
 adverbio(esp, adv(X)) --> [X], {adv(X,_)}.
 adverbio(eng, adv(X)) --> [Y], {adv(X,Y)}.
 adv(cuando, when).
-/*adv(que).
-adv(donde).
-adv(mientras).
-adv(muy).
-adv(bastante).
-adv(ayer).
-adv(solamente).*/
+adv(que, that).
+adv(donde, where).
+adv(mientras, while).
+adv(muy, very).
+adv(bastante, quite).
+adv(ayer, yesterday).
+adv(solamente, only).
 
 preposicion(esp, prep(X)) --> [X], {prep(X,_)}.
 preposicion(eng, prep(X)) --> [Y], {prep(X,Y)}.
-prep(para, from).
-/*prep(a).
-prep(de).
-prep(para).
-prep(en).
-prep(por).*/
+prep(a, to).
+prep(de, of).
+prep(para, to).
+prep(en, in).
+prep(por, by).
