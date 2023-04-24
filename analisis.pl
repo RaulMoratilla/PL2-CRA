@@ -1,3 +1,5 @@
+:-consult("draw.pl").
+
 %Diccionario
 
 determinante(det(X)) --> [X], {det(X)}.
@@ -115,8 +117,6 @@ prep(por).
 oracion(X, O, Y) :- compuesta(X, O, Y).
 oracion(X, O, Y) :- simple(X, O, Y).
 
-%compuesta(ocm(OCM)) --> oracion(OCM).
-%compuesta(ocm(OCM)) --> subordinada(OCM).
 compuesta(ocm(OCM)) --> coordinada(OCM).
 
 simple(os(GN, GV)) --> g_nominal(GN), g_verbal(GV).
@@ -126,12 +126,6 @@ coordinada(oc(O,CONJ,O2)) --> simple(O), conjuncion(CONJ), simple(O2).
 coordinada(oc(O,CONJ,O2)) --> simple(O), conjuncion(CONJ), compuesta(O2).
 
 subordinada(or(ADV, O)) --> adverbio(ADV), oracion(O).
-%subordinada(or(O,ADV,O2)) --> oracion(O), adverbio(ADV), oracion(O2).
-%subordinada(or(O,ADV,O2)) --> oracion(O), adverbio(ADV), coordinada(O2).
-%subordinada(or(O,ADV,O2)) --> oracion(O), adverbio(ADV), subordinada(O2).
-%subordinada(or(O,ADV,O2)) --> adverbio(ADV), oracion(O), oracion(O2).
-%subordinada(or(O,ADV,O2)) --> adverbio(ADV), oracion(O), coordinada(O2).
-%subordinada(or(O,ADV,O2)) --> adverbio(ADV), oracion(O), subordinada(O2).
 
 g_nominal(gn(N)) --> nombre(N).
 g_nominal(gn(N, N1)) --> nombre(N), nombre(N1).
@@ -187,16 +181,3 @@ o_prueba([el,procesador,de,textos,que,es,una,herramienta,bastante,potente,sirve,
 o_prueba([el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirve,para,escribir,documentos,pero,es,bastante,lento]).
 o_prueba([el,raton,que,cazo,el,gato,era,gris]).
 o_prueba([el,hombre,que,vimos,ayer,era,mi,vecino]).
-
-
-
-
-
-
-
-
-
-
-
-
-
