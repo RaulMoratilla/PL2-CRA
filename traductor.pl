@@ -11,13 +11,15 @@ Y = [el, hombre, come]
 */
 
 oracion(esp, o(GN,GV)) --> g_nominal(esp, GN), g_verbal(esp, GV).
+oracion(eng, o(GN,GV)) --> g_nominal(eng, GN), g_verbal(eng, GV).
+
 g_nominal(esp, gn(N)) --> nombre(esp, N).
 g_nominal(esp, gn(D,N)) --> determinante(esp, D), nombre(esp, N).
-g_verbal(esp, gv(V)) --> verbo(esp, V).
 
-oracion(eng, o(GN,GV)) --> g_nominal(eng, GN), g_verbal(eng, GV).
 g_nominal(eng, gn(N)) --> nombre(eng, N).
 g_nominal(eng, gn(D,N)) --> determinante(eng, D), nombre(eng, N).
+
+g_verbal(esp, gv(V)) --> verbo(esp, V).
 g_verbal(eng, gv(V)) --> verbo(eng, V).
 
 determinante(esp, det(X)) --> [X],{det(X,_)}.
