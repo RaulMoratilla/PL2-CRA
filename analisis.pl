@@ -127,40 +127,36 @@ coordinada(oc(O,CONJ,O2)) --> simple(O), conjuncion(CONJ), compuesta(O2).
 
 subordinada(or(ADV, O)) --> adverbio(ADV), oracion(O).
 
-g_nominal(gn(N)) --> nombre(N).
-g_nominal(gn(N, N1)) --> nombre(N), nombre(N1).
-g_nominal(gn(D,N)) --> determinante(D), nombre(N).
-g_nominal(gn(N,A)) --> nombre(N), g_adjetival(A).
-g_nominal(gn(D,N,A)) --> determinante(D), nombre(N), g_adjetival(A).
-g_nominal(gn(N,GP)) --> nombre(N), g_preposicional(GP).
-g_nominal(gn(D,N,GP)) --> determinante(D), nombre(N), g_preposicional(GP).
-g_nominal(gn(N, ADV, A)) --> nombre(N), adverbio(ADV), g_adjetival(A).
-g_nominal(gn(ADV, N, A)) --> adverbio(ADV), nombre(N),  g_adjetival(A).
-g_nominal(gn(N, ADV, GN)) --> nombre(N), adverbio(ADV), g_nominal(GN).
-g_nominal(gn(N, OR)) --> nombre(N), subordinada(OR).
-g_nominal(gn(DET, N, OR)) --> determinante(DET), nombre(N), subordinada(OR).
-g_nominal(gn(DET, N, GA, OR)) --> determinante(DET), nombre(N), g_adjetival(GA), subordinada(OR).
-g_nominal(gn(GN,CONJ,GN2)) --> nombre(GN), conjuncion(CONJ), nombre(GN2).
+complementos(GADJ) --> g_adjetival(GADJ).
+complementos(GADV) --> g_adverbial(GADV).
+complementos(GPREP) --> g_preposicional(GPREP).
+complementos(GN) --> g_nominal(GN).
+complementos(SUB) --> subordinada(SUB).
+complementos(comp(SUB, COMP)) --> subordinada(SUB), complementos(COMP).
+complementos(comp(CONJ, GN)) --> conjuncion(CONJ), g_nominal(GN).
+complementos(comp(GADJ, COMP)) --> g_adjetival(GADJ), complementos(COMP).
+complementos(comp(GADV, COMP)) --> g_adverbial(GADV), complementos(COMP).
+complementos(comp(GPREP, COMP)) --> g_preposicional(GPREP), complementos(COMP).
+complementos(comp(GN, COMP)) --> g_nominal(GN), complementos(COMP).
+complementos(comp(CONJ, GN, COMP)) --> conjuncion(CONJ), g_nominal(GN), complementos(COMP).
 
+g_verbal(gv(V,COMP)) --> verbo(V), complementos(COMP).
 g_verbal(gv(V)) --> verbo(V).
-g_verbal(gv(V,GN)) --> verbo(V), g_nominal(GN).
-g_verbal(gv(V,A)) --> verbo(V), g_adjetival(A).
-g_verbal(gv(V,OR)) --> verbo(V), subordinada(OR).
-g_verbal(gv(V,GN,GP)) --> verbo(V), g_nominal(GN), g_preposicional(GP).
-g_verbal(gv(V,GN,GP)) --> verbo(V), g_preposicional(GP), g_nominal(GN), g_preposicional(GP).
-g_verbal(gv(V,GP,GP1)) --> verbo(V), g_preposicional(GP), g_preposicional(GP1).
-g_verbal(gv(V,GP)) --> verbo(V), g_preposicional(GP).
-g_verbal(gv(V,GADV)) --> verbo(V), g_adverbial(GADV).
+
+g_nominal(gn(N, COMP)) --> nombre(N), complementos(COMP).
+g_nominal(gn(N)) --> nombre(N).
+g_nominal(gn(DET, N, COMP)) --> determinante(DET), nombre(N), complementos(COMP).
+g_nominal(gn(DET, N)) --> determinante(DET), nombre(N).
 
 g_adjetival(gadj(A)) --> adjetivo(A).
-g_adjetival(gadj(GADJ,GADJ2)) --> adjetivo(GADJ), adjetivo(GADJ2).
+g_adjetival(gadj(GADJ,GADJ2)) --> adjetivo(GADJ), g_adjetival(GADJ2).
 g_adjetival(gadj(GADJ,GN)) --> adjetivo(GADJ), g_nominal(GN).
 g_adjetival(gadj(GADJ,GP)) --> adjetivo(GADJ), g_preposicional(GP).
-g_adjetival(gadj(ADV,GADJ)) --> adverbio(ADV), adjetivo(GADJ).
-g_adjetival(gadj(GADJ,CONJ,GADJ2)) --> adjetivo(GADJ), conjuncion(CONJ), adjetivo(GADJ2).
+g_adjetival(gadj(ADV,GADJ)) --> adverbio(ADV), g_adjetival(GADJ).
+g_adjetival(gadj(GADJ,CONJ,GADJ2)) --> adjetivo(GADJ), conjuncion(CONJ), g_adjetival(GADJ2).
 
 g_adverbial(gadv(ADV)) --> adverbio(ADV).
-g_adverbial(gadv(GADV,GADV2)) --> adverbio(GADV), adverbio(GADV2).
+g_adverbial(gadv(GADV,GADV2)) --> adverbio(GADV), g_adverbial(GADV2).
 g_adverbial(gadv(GADV,GN)) --> adverbio(GADV), g_preposicional(GN).
 
 g_preposicional(gp(P,GN)) --> preposicion(P), g_nominal(GN).
