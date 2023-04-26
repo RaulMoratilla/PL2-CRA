@@ -24,10 +24,13 @@ o_prueba(14, [el,hombre,que,vimos,ayer,era,mi,vecino]).
 ejecutar_pruebas(INI, INI).
 ejecutar_pruebas(INI, FIN) :- 
     o_prueba(INI, O),
+    ejecutar_oracion(O),
+    INI2 is INI+1,
+    ejecutar_pruebas(INI2, FIN).
+
+ejecutar_oracion(O) :-
     oracion(X, O, []),
     draw(X),
     separar(X, C),
     formatear_oraciones(C, C1),
-    write(C1), nl,
-    INI2 is INI+1,
-    ejecutar_pruebas(INI2, FIN).
+    write(C1), nl.
