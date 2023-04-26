@@ -6,7 +6,7 @@
  */
 aplanar_args(_, _, 0).
 
-% Caso de quue haya mas compounds dentro
+% Caso de que haya mas compounds dentro
 aplanar_args(X, Y, N) :-
     compound(X),
     arg(N, X, ARGACT),
@@ -124,11 +124,14 @@ add_args(X, Y, IX, IY, NFIN) :-
  * Devuelve True si encuentra una oracion subordinada en el arbol X
  * Accede al arbol de forma recursiva
  */
+
+% Si encuentra la subordinada devuelve True
 buscar_subordinada(X, N, _) :-
     arg(N, X, ARG),
     compound(ARG),
     functor(ARG, or, _).
 
+% Si es coordinada no hay que buscar mas
 buscar_subordinada(X, N, N1) :-
     N =< N1,
     arg(N, X, ARG),
@@ -146,6 +149,7 @@ buscar_subordinada(X, N, N1) :-
  */
 ajustar_compuestas_args(_, _, N, M) :- N > M.
 
+% Si N es compound itera sus hijos y sus hermanos
 ajustar_compuestas_args(X, Y, N, M) :-
     N =< M,
     arg(N, X, ARG),
@@ -155,6 +159,7 @@ ajustar_compuestas_args(X, Y, N, M) :-
     N1 is N + 1,
     ajustar_compuestas_args(X, Y, N1, M).
 
+% Si N no es compound itera sus hermanos
 ajustar_compuestas_args(X, Y, N, M) :-
     N =< M,
     arg(N, X, ARG),
@@ -170,6 +175,7 @@ ajustar_compuestas_args(X, Y, N, M) :-
 ajustar_compuestas(X, X) :-
     \+ compound(X).
 
+% Si es una oracion simple y tiene una subordinada la transforma en compuesta
 ajustar_compuestas(X, Y) :-
     compound(X),
     functor(X, os, N),
@@ -179,6 +185,7 @@ ajustar_compuestas(X, Y) :-
     functor(Y, ocm, N),
     ajustar_compuestas_args(Y1, Y, 1, N).
 
+% Si no es una oracion simple sigue buscando
 ajustar_compuestas(X, Y) :-
     compound(X),
     functor(X, F, N),
@@ -195,6 +202,7 @@ ajustar_compuestas(X, Y) :-
 separar(X, oraciones(-)) :-
     \+ compound(X).
 
+% Caso de que haya subordinada dentro
 separar(X, C) :-
     compound(X),
     functor(X, ocm, M),
@@ -207,12 +215,14 @@ separar(X, C) :-
     copy_compound(C1, C, 1, 2, M),
     arg(1, C, X1).
 
+% Caso de que no haya subordinada dentro
 separar(X, C) :-
     compound(X),
     functor(X, F, N),
     F \= os,
     separar_args(X, C, N).
 
+% Caso de que sea una oracion simple
 separar(X, C) :-
     compound(X),
     functor(X, os, M),
@@ -224,9 +234,33 @@ separar(X, C) :-
     arg(1, C, X).
 
 /**
+ * Ayuda a iterar el arbol sintactico iterando los nodos hermanos
+ * y los nodos hijos
+ */
+separar_args(_, oraciones(-), 0).
+
+% Si N no es compound itera sus hermanos
+separar_args(X, C, N) :-
+    arg(N, X, A),
+    \+ compound(A),
+    N1 is N-1,
+    separar_args(X, C2, N1),
+    concatenar_compound(oraciones(-), C2, C).
+
+% Si N es compound se separa y se itera sus hermanos
+separar_args(X, C, N) :-
+    arg(N, X, A),
+    separar(A, C1),
+    N1 is N-1,
+    separar_args(X, C2, N1),
+    concatenar_compound(C1, C2, C).
+
+/**
  * Elimina las oraciones subordinadas de X
  * obteniendo en X1 el resto de la oracion
  */
+
+% Si esa es la oracion subordinada se elimina y se devuelve su nivel consigo mismo
 quitar_subordinada(X, X1, N, M) :-
     N =< M,
     functor(X, F, M),
@@ -238,6 +272,7 @@ quitar_subordinada(X, X1, N, M) :-
     copy_compound(X, X1, 1, 1, N-1),
     copy_compound(X, X1, N+1, N, M).
 
+% Si no es la oracion subordinada se sigue buscando. Cuando se encuentra se anaden los compounds ncesarios
 quitar_subordinada(X, X1, N, M) :-
     N =< M,
     functor(X, F, M),
@@ -254,34 +289,17 @@ quitar_subordinada(X, X1, N, M) :-
     copy_compound(X, X1, 1, 1, N2));
     quitar_subordinada(X, X1, N1, M)).
 
-/**
- * Ayuda a iterar el arbol sintactico iterando los nodos hermanos
- * y los nodos hijos
- */
-separar_args(_, oraciones(-), 0).
-
-separar_args(X, C, N) :-
-    arg(N, X, A),
-    \+ compound(A),
-    N1 is N-1,
-    separar_args(X, C2, N1),
-    concatenar_compound(oraciones(-), C2, C).
-
-separar_args(X, C, N) :-
-    arg(N, X, A),
-    separar(A, C1),
-    N1 is N-1,
-    separar_args(X, C2, N1),
-    concatenar_compound(C1, C2, C).
-
 % SUJETO
 
 /**
  * Busca el sujeto de una oracion. Si lo encuentra devuelve true
  */
+
+% Si encuentra un gn a la izquierda es el sujeto y devuelve true
 buscar_sujeto(O, O) :-
     functor(O, gn, _).
 
+% Si no encuentra un gn a la izquierda busca en el primer argumento
 buscar_sujeto(O, SUJ) :-
     functor(O, F, _),
     F \= gv,
@@ -301,11 +319,13 @@ get_sujeto(O, SUJ) :-
  */
 poner_sujeto([], [], _).
 
+% Si el sujeto ya esta anadido no se anade
 poner_sujeto([O|RO], [O|ROS], _) :-
     get_sujeto(O, SUJ1),
     get_oracion(SUJ1, SUJL),
     poner_sujeto(RO, ROS, SUJL).
 
+% Si el sujeto no esta anadido se anade
 poner_sujeto([O|RO], [OS|ROS], SUJ) :-
     append(SUJ, O, OS),
     poner_sujeto(RO, ROS, SUJ).
@@ -325,6 +345,7 @@ formatear_oraciones(X, L) :-
  */
 get_oraciones(_, [], 0).
 
+% Caso de que no sea un guion
 get_oraciones(X, L, OACT) :-
     OACT > 0,
     arg(OACT, X, A),
@@ -334,6 +355,7 @@ get_oraciones(X, L, OACT) :-
     get_oracion(A, O),
     append(L1, [O], L).
 
+% Caso de que sea un guion
 get_oraciones(X, L, OACT) :-
     OACT > 0,
     arg(OACT, X, A),
@@ -351,6 +373,7 @@ get_oracion(X, L) :-
 
 get_oracion(_, [], 0).
 
+% 
 get_oracion(X, L, N) :-
     N > 0,
     arg(N, X, A),
