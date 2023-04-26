@@ -123,20 +123,35 @@ g_preposicional(eng, gp(P,GADV)) --> preposicion(eng, P), g_adverbial(eng, GADV)
 
 %%%%
 
-o_prueba(1, [jose,es,moreno,y,maria,es,alta]).
-o_prueba(2, [jose,estudia,filosofia,pero,maria,estudia,derecho]).
-o_prueba(3, [maria,toma,un,cafe,mientras,jose,recoge,la,mesa]).
-o_prueba(4, [jose,toma,cafe,y,lee,el,periodico]).
-o_prueba(5, [jose,y,hector,comen,patatas,fritas,y,beben,cerveza]).
-o_prueba(6, [jose,come,patatas,fritas,pero,maria,prefiere,paella,aunque,hector,toma,cafe,e,irene,lee,una,novela]).
-o_prueba(7, [irene,canta,y,salta,mientras,jose,estudia]).
-o_prueba(8, [hector,come,patatas,fritas,y,bebe,zumo,mientras,jose,canta,y,salta,aunque,maria,lee,una,novela]).
-o_prueba(9, [jose,que,es,agil,escala,en,el,rocodromo,por,las,tardes]).
-o_prueba(10, [jose,que,es,muy,delicado,come,solamente,manzanas,rojas]).
-o_prueba(11, [el,procesador,de,textos,que,es,una,herramienta,bastante,potente,sirve,para,escribir,documentos]).
-o_prueba(12, [el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirve,para,escribir,documentos,pero,es,bastante,lento]).
-o_prueba(13, [el,raton,que,cazo,el,gato,era,gris]).
-o_prueba(14, [el,hombre,que,vimos,ayer,era,mi,vecino]).
+o_pruebaESP(1, [jose,es,moreno,y,maria,es,alta]).
+o_pruebaESP(2, [jose,estudia,filosofia,pero,maria,estudia,derecho]).
+o_pruebaESP(3, [maria,toma,un,cafe,mientras,jose,recoge,la,mesa]).
+o_pruebaESP(4, [jose,toma,cafe,y,lee,el,periodico]).
+o_pruebaESP(5, [jose,y,hector,comen,patatas,fritas,y,beben,cerveza]).
+o_pruebaESP(6, [jose,come,patatas,fritas,pero,maria,prefiere,paella,aunque,hector,toma,cafe,e,irene,lee,una,novela]).
+o_pruebaESP(7, [irene,canta,y,salta,mientras,jose,estudia]).
+o_pruebaESP(8, [hector,come,patatas,fritas,y,bebe,zumo,mientras,jose,canta,y,salta,aunque,maria,lee,una,novela]).
+o_pruebaESP(9, [jose,que,es,agil,escala,en,el,rocodromo,por,las,tardes]).
+o_pruebaESP(10, [jose,que,es,muy,delicado,come,solamente,manzanas,rojas]).
+o_pruebaESP(11, [el,procesador,de,textos,que,es,una,herramienta,bastante,potente,sirve,para,escribir,documentos]).
+o_pruebaESP(12, [el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirve,para,escribir,documentos,pero,es,bastante,lento]).
+o_pruebaESP(13, [el,raton,que,cazo,el,gato,era,gris]).
+o_pruebaESP(14, [el,hombre,que,vimos,ayer,era,mi,vecino]).
+
+o_pruebaENG(1, [joseph,is,brown,and,mary,is,tall]).
+o_pruebaENG(2, [joseph,studies,philosophy,but,mary,studies,law]).
+o_pruebaENG(3, [mary,takes,a,coffee,while,joseph,collect,the,table]).
+o_pruebaENG(4, [joseph,takes,coffee,and,reeds,the,newspaper]).
+o_pruebaENG(5, [joseph,and,hector,eat,potatoes,fried,and,drink,beer]).
+o_pruebaENG(6, [joseph,eats,potatoes,fried,but,mary,prefers,paella,although,hector,takes,coffee,and,irene,reeds,a,novel]).
+o_pruebaENG(7, [irene,sings,and,jumps,while,joseph,studies]).
+o_pruebaENG(8, [hector,eats,potatoes,fried,and,drinks,juice,while,joseph,sings,and,jumps,although,mary,reeds,a,novel]).
+o_pruebaENG(9, [joseph,that,is,agile,climbs,in,the,climbing-wall,by,the,afternoon]).
+o_pruebaENG(10, [joseph,that,is,very,delicate,eats,only,apples,red]).
+o_pruebaENG(11, [the,processor,of,texts,that,is,a,tool,quite,powerful,serves,to,writing,documents]).
+o_pruebaENG(12, [the,processor,of,texts,is,a,tool,very,powerful,that,serves,to,writing,documents,but,is,quite,slow]).
+o_pruebaENG(13, [the,mouse,that,hunted,the,cat,was,gray]).
+o_pruebaENG(14, [the,man,that,saw,yesterday,was,my,neighbor]).
 
 traducir(DESDE, HASTA, O) :-
 	oracion(DESDE, X, O, []),
@@ -144,9 +159,16 @@ traducir(DESDE, HASTA, O) :-
 	write('Oracion en '), write(DESDE), write(': '), write(O), nl,
 	write('Oracion en '), write(HASTA), write(': '), write(Y), nl, nl.
 
-ejecutar_pruebas(INI, INI).
-ejecutar_pruebas(INI, FIN) :- 
-    o_prueba(INI, O),
+ejecutar_pruebasESP(INI, INI).
+ejecutar_pruebasESP(INI, FIN) :- 
+	o_pruebaESP(INI, O),
 	traducir(esp, eng, O),
-    INI2 is INI+1,
-    ejecutar_pruebas(INI2, FIN).
+	INI2 is INI+1,
+	ejecutar_pruebasESP(INI2, FIN).
+
+ejecutar_pruebasENG(INI, INI).
+ejecutar_pruebasENG(INI, FIN) :- 
+	o_pruebaENG(INI, O),
+	traducir(eng, esp, O),
+	INI2 is INI+1,
+	ejecutar_pruebasENG(INI2, FIN).
