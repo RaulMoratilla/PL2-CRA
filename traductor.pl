@@ -1,7 +1,7 @@
 
 :-consult("diccionarioTRA.pl").
 
-% Reglas gramaticales
+% Reglas Gramaticales
 
 % Oracion
 oracion(esp, X, O, Y) :- compuesta(esp, X, O, Y).

@@ -1,5 +1,6 @@
 % Diccionario ESP - ENG
 
+% Determinantes
 determinante(esp, det(X)) --> [X], {det(X,_)}.
 determinante(eng, det(X)) --> [Y], {det(X,Y)}.
 det(el,the).
@@ -47,6 +48,7 @@ det(algun, any).
 det(estas, these).
 det(muchas, a-lot-of).
 
+% Sustantivos
 nombre(esp, n(X)) --> [X], {n(X,_)}.
 nombre(eng, n(X)) --> [Y], {n(X,Y)}.
 n(hombre, man).
@@ -350,6 +352,7 @@ n(propia, own).
 n(tener, owning).
 n(sobre, envelope).
 
+% Verbos
 verbo(esp, v(X)) --> [X], {v(X,_)}.
 verbo(eng, v(X)) --> [Y], {v(X,Y)}.
 v(ama, love).
@@ -428,6 +431,7 @@ v(va, goes).
 v(sea, be).
 v(tenia, had).
 
+% Adjetivos
 adjetivo(esp, adj(X)) --> [X], {adj(X,_)}.
 adjetivo(eng, adj(X)) --> [Y], {adj(X,Y)}.
 adj(roja, red).
@@ -483,6 +487,7 @@ adj(mal, bad).
 adj(necesario, necessary).
 adj(nuevas, new).
 
+% Conjunciones
 conjuncion(esp, conj(X)) --> [X], {conj(X,_)}.
 conjuncion(eng, conj(X)) --> [Y], {conj(X,Y)}.
 conj(y, and).
@@ -494,6 +499,7 @@ conj(o, or).
 conj(sino, but).
 conj(mientras, while).
 
+% Adverbios
 adverbio(esp, adv(X)) --> [X], {adv(X,_)}.
 adverbio(eng, adv(X)) --> [Y], {adv(X,Y)}.
 adv(cuando, when).
@@ -562,6 +568,7 @@ adv(aqui, here).
 adv(quienes, who).
 adv(nunca, never).
 
+% Preposiciones
 preposicion(esp, prep(X)) --> [X], {prep(X,_)}.
 preposicion(eng, prep(X)) --> [Y], {prep(X,Y)}.
 prep(a, to).
