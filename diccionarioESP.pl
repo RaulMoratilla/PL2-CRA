@@ -382,7 +382,6 @@ v(ver).
 v(iba).
 v(pueden).
 v(quiere).
-v(se).
 v(tienen).
 v(fueron).
 v(van).

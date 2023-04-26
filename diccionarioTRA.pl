@@ -10,7 +10,6 @@ det(una, a).
 det(mi, my).
 det(la, the).
 det(este, this).
-det(el, the).
 det(los, the).
 det(aquella, that).
 det(las, the).
@@ -46,7 +45,7 @@ det(nuestros, our).
 det(algunos, some).
 det(algun, any).
 det(estas, these).
-det(muchas, a lot of).
+det(muchas, a-lot-of).
 
 nombre(esp, n(X)) --> [X], {n(X,_)}.
 nombre(eng, n(X)) --> [Y], {n(X,Y)}.
@@ -126,8 +125,8 @@ n(agua, water).
 n(policia, police).
 n(dos, two).
 n(puerta, door).
-n(haber, there is).
-n(pesar, to weight).
+n(haber, there-is).
+n(pesar, to-weight).
 n(situacion, situation).
 n(zona, zone).
 n(calle, street).
@@ -167,19 +166,18 @@ n(realidad, reality).
 n(servicio, service).
 n(sentido, way).
 n(hijo, son).
-n(el, he).
 n(lado, side).
 n(ultima, last).
 n(uno, one).
 n(ciento, hundread).
 n(cambio, change).
-n(hablar, to speak).
+n(hablar, speaking).
 n(tiempo, time).
 n(mismo, same).
 n(mano, hand).
 n(minutos, minutes).
 n(produccion, production).
-n(estar, to be).
+n(estar, to-be).
 n(camino, path).
 n(san, saint).
 n(seis, six).
@@ -221,7 +219,7 @@ n(cinco, five).
 n(medios, media).
 n(tres, three).
 n(carlos, charles).
-n(ir, to go).
+n(ir, going).
 n(hombres, men).
 n(informacion, information).
 n(poblacion, population).
@@ -249,13 +247,13 @@ n(nosotros, we).
 n(nada, nothing).
 n(hora, hour).
 n(primeros, firsts).
-n(hacer, to do).
+n(hacer, doing).
 n(arte, art).
 n(general, general).
 n(pueblo, town).
 n(paz, peace).
 n(sector, sector).
-n(dar, to give).
+n(dar, giving).
 n(imagen, image).
 n(problema, problem).
 n(medida, measure).
@@ -290,7 +288,7 @@ n(millones, millions).
 n(director, director).
 n(actividad, activity).
 n(espana, spain).
-n(uso, to use).
+n(uso, using).
 n(casos, cases).
 n(nino, kid).
 n(manos, hands).
@@ -304,9 +302,9 @@ n(mes, month).
 n(partir, split).
 n(trabajo, work).
 n(falta, lack).
-n(llegar, to arrive).
+n(llegar, arriving).
 n(ministro, minister).
-n(decir, to say).
+n(decir, saying).
 n(cosa, thing).
 n(primero, first).
 n(posibilidad, posibility).
@@ -349,7 +347,7 @@ n(calidad, quality).
 n(frente, forehead).
 n(fin, end).
 n(propia, own).
-n(tener, to own).
+n(tener, owning).
 n(sobre, envelope).
 
 verbo(esp, v(X)) --> [X], {v(X,_)}.
@@ -372,66 +370,63 @@ v(sirve, serves).
 v(cazo, hunted).
 v(vimos, saw).
 v(era, was).
-v(era).
-v(ver).
-v(iba).
-v(pueden).
-v(quiere).
-v(se).
-v(tienen).
-v(fueron).
-v(van).
-v(es).
-v(he).
-v(como).
-v(sera).
-v(ha).
-v(creo).
-v(tengo).
-v(dice).
-v(son).
-v(parece).
-v(fue).
-v(habia).
-v(sabe).
-v(era).
-v(esta).
-v(habian).
-v(hizo).
-v(hubiera).
-v(han).
-v(hay).
-v(puede).
-v(tiene).
-v(estoy).
-v(dio).
-v(eran).
-v(hace).
-v(dijo).
-v(sido).
-v(siendo).
-v(estaba).
-v(deben).
-v(da).
-v(podria).
-v(seria).
-v(existe).
-v(hecho).
-v(llego).
-v(estan).
-v(podia).
-v(soy).
-v(hacia).
-v(estaban).
-v(sigue).
-v(hemos).
-v(debe).
-v(trata).
-v(tuvo).
-v(se).
-v(va).
-v(sea).
-v(tenia).
+v(ver, see).
+v(iba, was-going).
+v(pueden, can).
+v(quiere, want).
+v(tienen, have).
+v(fueron, went).
+v(van, go).
+v(he, have).
+v(como, eat).
+v(sera, will-be).
+v(ha, has).
+v(creo, think).
+v(tengo, have).
+v(dice, says).
+v(son, are).
+v(parece, looks).
+v(fue, was).
+v(habia, there-was).
+v(sabe, knows).
+v(era, was).
+v(esta, was).
+v(habian, there-were).
+v(hizo, did).
+v(hubiera, had).
+v(han, had).
+v(hay, there-is).
+v(puede, can).
+v(tiene, have).
+v(estoy, am).
+v(dio, gave).
+v(eran, were).
+v(hace, its).
+v(dijo, said).
+v(sido, been).
+v(siendo, being).
+v(estaba, was).
+v(deben, must).
+v(da, give).
+v(podria, could).
+v(seria, would-be).
+v(existe, exists).
+v(hecho, done).
+v(llego, arrive).
+v(estan, are).
+v(podia, could).
+v(soy, am).
+v(hacia, did).
+v(estaban, were).
+v(sigue, go-on).
+v(hemos, have).
+v(debe, must).
+v(trata, treats).
+v(tuvo, had).
+v(se, know).
+v(va, goes).
+v(sea, be).
+v(tenia, had).
 
 adjetivo(esp, adj(X)) --> [X], {adj(X,_)}.
 adjetivo(eng, adj(X)) --> [Y], {adj(X,Y)}.
@@ -448,45 +443,45 @@ adj(potente, powerful).
 adj(lento, slow).
 adj(agil, agile).
 adj(delicado, delicate).
-adj(espanol).
-adj(buena).
-adj(nueva).
-adj(internacional).
-adj(propia).
-adj(social).
-adj(igual).
-adj(ultimos).
-adj(espanola).
-adj(unico).
-adj(bajo).
-adj(grandes).
-adj(buen).
-adj(posible).
-adj(importante).
-adj(bien).
-adj(especial).
-adj(diferentes).
-adj(actual).
-adj(gran).
-adj(publico).
-adj(alto).
-adj(personal).
-adj(unidos).
-adj(visto).
-adj(dicho).
-adj(bueno).
-adj(cierto).
-adj(dificil).
-adj(joven).
-adj(largo).
-adj(nacional).
-adj(pronto).
-adj(nuevos).
-adj(nuevo).
-adj(cerca).
-adj(mal).
-adj(necesario).
-adj(nuevas).
+adj(espanol, spanish).
+adj(buena, good).
+adj(nueva, new).
+adj(internacional, international).
+adj(propia, owned).
+adj(social, social).
+adj(igual, equal).
+adj(ultimos, last).
+adj(espanola, spanish).
+adj(unico, unique).
+adj(bajo, low).
+adj(grandes, big).
+adj(buen, good).
+adj(posible, possible).
+adj(importante, important).
+adj(bien, good).
+adj(especial, special).
+adj(diferentes, differents).
+adj(actual, actual).
+adj(gran, big).
+adj(publico, public).
+adj(alto, tall).
+adj(personal, personal).
+adj(unidos, joined).
+adj(visto, seen).
+adj(dicho, said).
+adj(bueno, good).
+adj(cierto, true).
+adj(dificil, difficult).
+adj(joven, young).
+adj(largo, long).
+adj(nacional, national).
+adj(pronto, soon).
+adj(nuevos, new).
+adj(nuevo, new).
+adj(cerca, near).
+adj(mal, bad).
+adj(necesario, necessary).
+adj(nuevas, new).
 
 conjuncion(esp, conj(X)) --> [X], {conj(X,_)}.
 conjuncion(eng, conj(X)) --> [Y], {conj(X,Y)}.
@@ -495,9 +490,9 @@ conj(e, and).
 conj(ni, neither).
 conj(pero, but).
 conj(aunque, although).
-conj(o).
-conj(sino).
-conj(mientras).
+conj(o, or).
+conj(sino, but).
+conj(mientras, while).
 
 adverbio(esp, adv(X)) --> [X], {adv(X,_)}.
 adverbio(eng, adv(X)) --> [Y], {adv(X,Y)}.
@@ -509,63 +504,63 @@ adv(muy, very).
 adv(bastante, quite).
 adv(ayer, yesterday).
 adv(solamente, only).
-adv(cual).
-adv(no).
-adv(ahi).
-adv(fin).
-adv(mas).
-adv(muchos).
-adv(si).
-adv(dentro).
-adv(ya).
-adv(cuando).
-adv(cualquier).
-adv(aun).
-adv(tambien).
-adv(fuera).
-adv(muy).
-adv(interior).
-adv(tampoco).
-adv(ningun).
-adv(porque).
-adv(solo).
-adv(asi).
-adv(alli).
-adv(ahora).
-adv(cada).
-adv(despues).
-adv(demas).
-adv(incluso).
-adv(traves).
-adv(tan).
-adv(durante).
-adv(siempre).
-adv(tanto).
-adv(si).
-adv(antes).
-adv(todavia).
-adv(anterior).
-adv(poco).
-adv(ayer).
-adv(junto).
-adv(mucho).
-adv(etc.).
-adv(cuanto).
-adv(ademas).
-adv(quien).
-adv(pues).
-adv(mejor).
-adv(propio).
-adv(entonces).
-adv(todas).
-adv(como).
-adv(casi).
-adv(toda).
-adv(tal).
-adv(luego).
-adv(aqui).
-adv(quienes).
-adv(nunca).
+adv(cual, which).
+adv(no, no).
+adv(ahi, there).
+adv(fin, end).
+adv(mas, more).
+adv(muchos, more).
+adv(si, yes).
+adv(dentro, inside).
+adv(ya, already).
+adv(cuando, when).
+adv(cualquier, any).
+adv(aun, still).
+adv(tambien, also).
+adv(fuera, outside).
+adv(muy, very).
+adv(interior, inside).
+adv(tampoco, also).
+adv(ningun, none).
+adv(porque, because).
+adv(solo, only).
+adv(asi, so).
+adv(alli, over-there).
+adv(ahora, now).
+adv(cada, each).
+adv(despues, then).
+adv(demas, rest).
+adv(incluso, also).
+adv(traves, through).
+adv(tan, so).
+adv(durante, during).
+adv(siempre, always).
+adv(tanto, so-much).
+adv(si, if).
+adv(antes, before).
+adv(todavia, still).
+adv(anterior, previous).
+adv(poco, bit).
+adv(ayer, yesterday).
+adv(junto, together).
+adv(mucho, a-lot).
+adv(etc, etc).
+adv(cuanto, how-much).
+adv(ademas, besides).
+adv(quien, who).
+adv(pues, then).
+adv(mejor, better).
+adv(propio, own).
+adv(entonces, so).
+adv(todas, all).
+adv(como, how).
+adv(casi, almost).
+adv(toda, all).
+adv(tal, such).
+adv(luego, then).
+adv(aqui, here).
+adv(quienes, who).
+adv(nunca, never).
 
 preposicion(esp, prep(X)) --> [X], {prep(X,_)}.
 preposicion(eng, prep(X)) --> [Y], {prep(X,Y)}.
@@ -574,16 +569,16 @@ prep(de, of).
 prep(para, to).
 prep(en, in).
 prep(por, by).
-prep(con).
-prep(tras).
-prep(al).
-prep(sin).
-prep(sobre).
-prep(entre).
-prep(hasta).
-prep(desde).
-prep(segun).
-prep(contra).
-prep(mediante).
-prep(ante).
-prep(hacia).
+prep(con, with).
+prep(tras, after).
+prep(al, to-the).
+prep(sin, without).
+prep(sobre, about).
+prep(entre, between).
+prep(hasta, until).
+prep(desde, from).
+prep(segun, according-to).
+prep(contra, against).
+prep(mediante, through).
+prep(ante, before).
+prep(hacia, to).

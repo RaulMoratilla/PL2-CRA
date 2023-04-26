@@ -1,5 +1,4 @@
 
-:-consult("draw.pl").
 :-consult("diccionarioTRA.pl").
 
 % Reglas gramaticales
@@ -38,84 +37,78 @@ subordinada(esp, or(ADV, O)) --> adverbio(esp, ADV), oracion(esp, O).
 
 subordinada(eng, or(ADV, O)) --> adverbio(eng, ADV), oracion(eng, O).
 
-%%%%
+%%%
 
-g_nominal(esp, gn(N)) --> nombre(esp, N).
-g_nominal(esp, gn(N, N1)) --> nombre(esp, N), nombre(esp, N1).
-g_nominal(esp, gn(D,N)) --> determinante(esp, D), nombre(esp, N).
-g_nominal(esp, gn(N,A)) --> nombre(esp, N), g_adjetival(esp, A).
-g_nominal(esp, gn(D,N,A)) --> determinante(esp, D), nombre(esp, N), g_adjetival(esp, A).
-g_nominal(esp, gn(N,GP)) --> nombre(esp, N), g_preposicional(esp, GP).
-g_nominal(esp, gn(D,N,GP)) --> determinante(esp, D), nombre(esp, N), g_preposicional(esp, GP).
-g_nominal(esp, gn(N, ADV, A)) --> nombre(esp, N), adverbio(esp, ADV), g_adjetival(esp, A).
-g_nominal(esp, gn(ADV, N, A)) --> adverbio(esp, ADV), nombre(esp, N),  g_adjetival(esp, A).
-g_nominal(esp, gn(N, ADV, GN)) --> nombre(esp, N), adverbio(esp, ADV), g_nominal(esp, GN).
-g_nominal(esp, gn(N, OR)) --> nombre(esp, N), subordinada(esp, OR).
-g_nominal(esp, gn(DET, N, OR)) --> determinante(esp, DET), nombre(esp, N), subordinada(esp, OR).
-g_nominal(esp, gn(DET, N, GA, OR)) --> determinante(esp, DET), nombre(esp, N), g_adjetival(esp, GA), subordinada(esp, OR).
-g_nominal(esp, gn(GN,CONJ,GN2)) --> nombre(esp, GN), conjuncion(esp, CONJ), nombre(esp, GN2).
+complementos(esp, comp(SUB)) --> subordinada(esp, SUB).
+complementos(esp, comp(GADJ)) --> g_adjetival(esp, GADJ).
+complementos(esp, comp(GADV)) --> g_adverbial(esp, GADV).
+complementos(esp, comp(GPREP)) --> g_preposicional(esp, GPREP).
+complementos(esp, comp(GN)) --> g_nominal(esp, GN).
+complementos(esp, comp(CONJ, GN)) --> conjuncion(esp, CONJ), g_nominal(esp, GN).
+complementos(esp, comp(SUB, COMP)) --> subordinada(esp, SUB), complementos(esp, COMP).
+complementos(esp, comp(GADJ, COMP)) --> g_adjetival(esp, GADJ), complementos(esp, COMP).
+complementos(esp, comp(GADV, COMP)) --> g_adverbial(esp, GADV), complementos(esp, COMP).
+complementos(esp, comp(GPREP, COMP)) --> g_preposicional(esp, GPREP), complementos(esp, COMP).
+complementos(esp, comp(GN, COMP)) --> g_nominal(esp, GN), complementos(esp, COMP).
+complementos(esp, comp(CONJ, GN, COMP)) --> conjuncion(esp, CONJ), g_nominal(esp, GN), complementos(esp, COMP).
 
-g_nominal(eng, gn(N)) --> nombre(eng, N).
-g_nominal(eng, gn(N, N1)) --> nombre(eng, N), nombre(eng, N1).
-g_nominal(eng, gn(D,N)) --> determinante(eng, D), nombre(eng, N).
-g_nominal(eng, gn(N,A)) --> nombre(eng, N), g_adjetival(eng, A).
-g_nominal(eng, gn(D,N,A)) --> determinante(eng, D), nombre(eng, N), g_adjetival(eng, A).
-g_nominal(eng, gn(N,GP)) --> nombre(eng, N), g_preposicional(eng, GP).
-g_nominal(eng, gn(D,N,GP)) --> determinante(eng, D), nombre(eng, N), g_preposicional(eng, GP).
-g_nominal(eng, gn(N, ADV, A)) --> nombre(eng, N), adverbio(eng, ADV), g_adjetival(eng, A).
-g_nominal(eng, gn(ADV, N, A)) --> adverbio(eng, ADV), nombre(eng, N),  g_adjetival(eng, A).
-g_nominal(eng, gn(N, ADV, eng, GN)) --> nombre(eng, N), adverbio(eng, ADV), g_nominal(eng, GN).
-g_nominal(eng, gn(N, OR)) --> nombre(eng, N), subordinada(eng, OR).
-g_nominal(eng, gn(DET, N, OR)) --> determinante(eng, DET), nombre(eng, N), subordinada(eng, OR).
-g_nominal(eng, gn(DET, N, GA, OR)) --> determinante(eng, DET), nombre(eng, N), g_adjetival(eng, GA), subordinada(eng, OR).
-g_nominal(eng, gn(GN,CONJ,GN2)) --> nombre(eng, GN), conjuncion(eng, CONJ), nombre(eng, GN2).
+complementos(eng, comp(SUB)) --> subordinada(eng, SUB).
+complementos(eng, comp(GADJ)) --> g_adjetival(eng, GADJ).
+complementos(eng, comp(GADV)) --> g_adverbial(eng, GADV).
+complementos(eng, comp(GPREP)) --> g_preposicional(eng, GPREP).
+complementos(eng, comp(GN)) --> g_nominal(eng, GN).
+complementos(eng, comp(CONJ, GN)) --> conjuncion(eng, CONJ), g_nominal(eng, GN).
+complementos(eng, comp(SUB, COMP)) --> subordinada(eng, SUB), complementos(eng, COMP).
+complementos(eng, comp(GADJ, COMP)) --> g_adjetival(eng, GADJ), complementos(eng, COMP).
+complementos(eng, comp(GADV, COMP)) --> g_adverbial(eng, GADV), complementos(eng, COMP).
+complementos(eng, comp(GPREP, COMP)) --> g_preposicional(eng, GPREP), complementos(eng, COMP).
+complementos(eng, comp(GN, COMP)) --> g_nominal(eng, GN), complementos(eng, COMP).
+complementos(eng, comp(CONJ, GN, COMP)) --> conjuncion(eng, CONJ), g_nominal(eng, GN), complementos(eng, COMP).
 
 %%%%
 
+g_verbal(esp, gv(V, COMP)) --> verbo(esp, V), complementos(esp, COMP).
 g_verbal(esp, gv(V)) --> verbo(esp, V).
-g_verbal(esp, gv(V,GN)) --> verbo(esp, V), g_nominal(esp, GN).
-g_verbal(esp, gv(V,A)) --> verbo(esp, V), g_adjetival(esp, A).
-g_verbal(esp, gv(V,OR)) --> verbo(esp, V), subordinada(esp, OR).
-g_verbal(esp, gv(V,GN,GP)) --> verbo(esp, V), g_nominal(esp, GN), g_preposicional(esp, GP).
-g_verbal(esp, gv(V,GN,GP)) --> verbo(esp, V), g_preposicional(esp, GP), g_nominal(esp, GN), g_preposicional(esp, GP).
-g_verbal(esp, gv(V,GP,GP1)) --> verbo(esp, V), g_preposicional(esp, GP), g_preposicional(esp, GP1).
-g_verbal(esp, gv(V,GP)) --> verbo(esp, V), g_preposicional(esp, GP).
-g_verbal(esp, gv(V,GADV)) --> verbo(esp, V), g_adverbial(esp, GADV).
 
+g_verbal(eng, gv(V, COMP)) --> verbo(eng, V), complementos(eng, COMP).
 g_verbal(eng, gv(V)) --> verbo(eng, V).
-g_verbal(eng, gv(V,GN)) --> verbo(eng, V), g_nominal(eng, GN).
-g_verbal(eng, gv(V,A)) --> verbo(eng, V), g_adjetival(eng, A).
-g_verbal(eng, gv(V,OR)) --> verbo(eng, V), subordinada(eng, OR).
-g_verbal(eng, gv(V,GN,GP)) --> verbo(eng, V), g_nominal(eng, GN), g_preposicional(eng, GP).
-g_verbal(eng, gv(V,GN,GP)) --> verbo(eng, V), g_preposicional(eng, GP), g_nominal(eng, GN), g_preposicional(eng, GP).
-g_verbal(eng, gv(V,GP,GP1)) --> verbo(eng, V), g_preposicional(eng, GP), g_preposicional(eng, GP1).
-g_verbal(eng, gv(V,GP)) --> verbo(eng, V), g_preposicional(eng, GP).
-g_verbal(eng, gv(V,GADV)) --> verbo(eng, V), g_adverbial(eng, GADV).
+
+%%%%
+
+g_nominal(esp, gn(N, COMP)) --> nombre(esp, N), complementos(esp, COMP).
+g_nominal(esp, gn(N)) --> nombre(esp, N).
+g_nominal(esp, gn(DET, N, COMP)) --> determinante(esp, DET), nombre(esp, N), complementos(esp, COMP).
+g_nominal(esp, gn(DET, N)) --> determinante(esp, DET), nombre(esp, N).
+
+g_nominal(eng, gn(N, COMP)) --> nombre(eng, N), complementos(eng, COMP).
+g_nominal(eng, gn(N)) --> nombre(eng, N).
+g_nominal(eng, gn(DET, N, COMP)) --> determinante(eng, DET), nombre(eng, N), complementos(eng, COMP).
+g_nominal(eng, gn(DET, N)) --> determinante(eng, DET), nombre(eng, N).
 
 %%%%
 
 g_adjetival(esp, gadj(A)) --> adjetivo(esp, A).
-g_adjetival(esp, gadj(GADJ,GADJ2)) --> adjetivo(esp, GADJ), adjetivo(esp, GADJ2).
+g_adjetival(esp, gadj(GADJ,GADJ2)) --> adjetivo(esp, GADJ), g_adjetival(esp, GADJ2).
 g_adjetival(esp, gadj(GADJ,GN)) --> adjetivo(esp, GADJ), g_nominal(esp, GN).
 g_adjetival(esp, gadj(GADJ,GP)) --> adjetivo(esp, GADJ), g_preposicional(esp, GP).
-g_adjetival(esp, gadj(ADV,GADJ)) --> adverbio(esp, ADV), adjetivo(esp, GADJ).
-g_adjetival(esp, gadj(GADJ,CONJ,GADJ2)) --> adjetivo(esp, GADJ), conjuncion(esp, CONJ), adjetivo(esp, GADJ2).
+g_adjetival(esp, gadj(ADV,GADJ)) --> adverbio(esp, ADV), g_adjetival(esp, GADJ).
+g_adjetival(esp, gadj(GADJ,CONJ,GADJ2)) --> adjetivo(esp, GADJ), conjuncion(esp, CONJ), g_adjetival(esp, GADJ2).
 
 g_adjetival(eng, gadj(A)) --> adjetivo(eng, A).
-g_adjetival(eng, gadj(GADJ,GADJ2)) --> adjetivo(eng, GADJ), adjetivo(eng, GADJ2).
+g_adjetival(eng, gadj(GADJ,GADJ2)) --> adjetivo(eng, GADJ), g_adjetival(eng, GADJ2).
 g_adjetival(eng, gadj(GADJ,GN)) --> adjetivo(eng, GADJ), g_nominal(eng, GN).
 g_adjetival(eng, gadj(GADJ,GP)) --> adjetivo(eng, GADJ), g_preposicional(eng, GP).
-g_adjetival(eng, gadj(ADV,GADJ)) --> adverbio(eng, ADV), adjetivo(eng, GADJ).
-g_adjetival(eng, gadj(GADJ,CONJ,GADJ2)) --> adjetivo(eng, GADJ), conjuncion(eng, CONJ), adjetivo(eng, GADJ2).
+g_adjetival(eng, gadj(ADV,GADJ)) --> adverbio(eng, ADV), g_adjetival(eng, GADJ).
+g_adjetival(eng, gadj(GADJ,CONJ,GADJ2)) --> adjetivo(eng, GADJ), conjuncion(eng, CONJ), g_adjetival(eng, GADJ2).
 
 %%%%
 
 g_adverbial(esp, gadv(ADV)) --> adverbio(esp, ADV).
-g_adverbial(esp, gadv(GADV,GADV2)) --> adverbio(esp, GADV), adverbio(esp, GADV2).
+g_adverbial(esp, gadv(GADV,GADV2)) --> adverbio(esp, GADV), g_adverbial(esp, GADV2).
 g_adverbial(esp, gadv(GADV,GN)) --> adverbio(esp, GADV), g_preposicional(esp, GN).
 
 g_adverbial(eng, gadv(ADV)) --> adverbio(eng, ADV).
-g_adverbial(eng, gadv(GADV,GADV2)) --> adverbio(eng, GADV), adverbio(eng, GADV2).
+g_adverbial(eng, gadv(GADV,GADV2)) --> adverbio(eng, GADV), g_adverbial(eng, GADV2).
 g_adverbial(eng, gadv(GADV,GN)) --> adverbio(eng, GADV), g_preposicional(eng, GN).
 
 %%%%
@@ -130,17 +123,28 @@ g_preposicional(eng, gp(P,GADV)) --> preposicion(eng, P), g_adverbial(eng, GADV)
 
 %%%%
 
-o_prueba([jose,es,moreno,y,maria,es,alta]).
-o_prueba([jose,estudia,filosofia,pero,maria,estudia,derecho]).
-o_prueba([maria,toma,un,cafe,mientras,jose,recoge,la,mesa]).
-o_prueba([jose,toma,cafe,y,lee,el,periodico]).
-o_prueba([jose,y,hector,comen,patatas,fritas,y,beben,cerveza]).
-o_prueba([jose,come,patatas,fritas,pero,maria,prefiere,paella,aunque,hector,toma,cafe,e,irene,lee,una,novela]).
-o_prueba([irene,canta,y,salta,mientras,jose,estudia]).
-o_prueba([hector,come,patatas,fritas,y,bebe,zumo,mientras,jose,canta,y,salta,aunque,maria,lee,una,novela]).
-o_prueba([jose,que,es,agil,escala,en,el,rocodromo,por,las,tardes]).
-o_prueba([jose,que,es,muy,delicado,come,solamente,manzanas,rojas]).
-o_prueba([el,procesador,de,textos,que,es,una,herramienta,bastante,potente,sirve,para,escribir,documentos]).
-o_prueba([el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirve,para,escribir,documentos,pero,es,bastante,lento]).
-o_prueba([el,raton,que,cazo,el,gato,era,gris]).
-o_prueba([el,hombre,que,vimos,ayer,era,mi,vecino]).
+o_prueba(1, [jose,es,moreno,y,maria,es,alta]).
+o_prueba(2, [jose,estudia,filosofia,pero,maria,estudia,derecho]).
+o_prueba(3, [maria,toma,un,cafe,mientras,jose,recoge,la,mesa]).
+o_prueba(4, [jose,toma,cafe,y,lee,el,periodico]).
+o_prueba(5, [jose,y,hector,comen,patatas,fritas,y,beben,cerveza]).
+o_prueba(6, [jose,come,patatas,fritas,pero,maria,prefiere,paella,aunque,hector,toma,cafe,e,irene,lee,una,novela]).
+o_prueba(7, [irene,canta,y,salta,mientras,jose,estudia]).
+o_prueba(8, [hector,come,patatas,fritas,y,bebe,zumo,mientras,jose,canta,y,salta,aunque,maria,lee,una,novela]).
+o_prueba(9, [jose,que,es,agil,escala,en,el,rocodromo,por,las,tardes]).
+o_prueba(10, [jose,que,es,muy,delicado,come,solamente,manzanas,rojas]).
+o_prueba(11, [el,procesador,de,textos,que,es,una,herramienta,bastante,potente,sirve,para,escribir,documentos]).
+o_prueba(12, [el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirve,para,escribir,documentos,pero,es,bastante,lento]).
+o_prueba(13, [el,raton,que,cazo,el,gato,era,gris]).
+o_prueba(14, [el,hombre,que,vimos,ayer,era,mi,vecino]).
+
+ejecutar_pruebas(INI, INI).
+ejecutar_pruebas(INI, FIN) :- 
+    o_prueba(INI, O),
+	oracion(esp, X, O, []),
+	oracion(eng, X, Y, []),
+	write('Oracion en espagnol: '), write(O), nl,
+	write('Oracion en ingles: '), write(Y), nl,
+	nl,
+    INI2 is INI+1,
+    ejecutar_pruebas(INI2, FIN).
