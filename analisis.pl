@@ -222,10 +222,53 @@ add_args(X, Y, IX, IY, NFIN) :-
     IYN is IY + 1,
     add_args(X, Y, IXN, IYN, NFIN).
 
+buscar_subordinada(X, N, _) :-
+    arg(N, X, ARG),
+    compound(ARG),
+    functor(ARG, or, _).
+
+buscar_subordinada(X, N, N1) :-
+    N =< N1,
+    arg(N, X, ARG),
+    ((compound(ARG),
+    functor(ARG, F, M),
+    F \= or,
+    buscar_subordinada(ARG, 1, M));
+    (N2 is N + 1,
+    buscar_subordinada(X, N2, N1))).
+
+ajustar_compuestas_args(_, _, N, N).
+
+ajustar_compuestas_args(X, Y, N, M) :-
+    arg(N, X, ARG),
+    compound(ARG),
+    ajustar_compuestas(ARG, Y1),
+    arg(N, Y, Y1),
+    N1 is N + 1,
+    ajustar_compuestas_args(X, Y, N1, M).
+
+ajustar_compuestas(X, X) :-
+    \+ compound(X).
+
+ajustar_compuestas(X, Y) :-
+    compound(X),
+    functor(X, os, N),
+    buscar_subordinada(X, 1, N),
+    functor(Y1, ocm, N),
+    copy_compound(X, Y1, 1, 1, N),
+    ajustar_compuestas_args(Y1, Y, 1, N).
+
+ajustar_compuestas(X, Y) :-
+    compound(X),
+    functor(X, F, N),
+    functor(Y, F, N),
+    ajustar_compuestas_args(X, Y, 1, N).
+
+
 % Reglas Gramaticales
 
-oracion(X, O, Y) :- compuesta(X1, O, Y), once(aplanar_comp(X1, X)).
-oracion(X, O, Y) :- simple(X1, O, Y), once(aplanar_comp(X1, X)).
+oracion(X, O, Y) :- compuesta(X1, O, Y), once(aplanar_comp(X1, X)).%, ajustar_compuestas(X2, X).
+oracion(X, O, Y) :- simple(X1, O, Y), once(aplanar_comp(X1, X)).%, ajustar_compuestas(X2, X).
 
 compuesta(ocm(OCM)) --> coordinada(OCM).
 
@@ -237,11 +280,11 @@ coordinada(oc(O,CONJ,O2)) --> simple(O), conjuncion(CONJ), compuesta(O2).
 
 subordinada(or(ADV, O)) --> adverbio(ADV), oracion(O).
 
+complementos(comp(SUB)) --> subordinada(SUB).
 complementos(comp(GADJ)) --> g_adjetival(GADJ).
 complementos(comp(GADV)) --> g_adverbial(GADV).
 complementos(comp(GPREP)) --> g_preposicional(GPREP).
 complementos(comp(GN)) --> g_nominal(GN).
-complementos(comp(SUB)) --> subordinada(SUB).
 complementos(comp(CONJ, GN)) --> conjuncion(CONJ), g_nominal(GN).
 complementos(comp(SUB, COMP)) --> subordinada(SUB), complementos(COMP).
 complementos(comp(GADJ, COMP)) --> g_adjetival(GADJ), complementos(COMP).
@@ -297,20 +340,63 @@ ejecutar_pruebas(INI, FIN) :-
     ejecutar_pruebas(INI2, FIN).
 
 
+separar(X, oraciones(-)) :-
+    \+ compound(X).
 
-% Regla base: cuando no hay más conjunciones en la oración
-separar(oracion(X, O, []), [oracion(X, O, [])], []).
+separar(X, C) :-
+    compound(X),
+    functor(X, F, N),
+    F \= os,
+    separar_args(X, C, N).
 
-% Regla general: separar la oración en dos partes en función de la conjunción más a la derecha
-separar(oracion(X, O, Y), [oracion(X, O, [])], [oracion(X, O, [], Parte2)|Resto]) :-
-    functor(Conj, conj, _),
-    separar(Parte2, Resto).
-    
-% Si no hay más conjunciones, la lista de oraciones no se modifica
-separar(Parte, [oracion(X, O, [])], []).
+separar(X, C) :-
+    compound(X),
+    functor(X, os, M),
+    separar_args(X, C1, M),
+    functor(C1, F, N),
+    N1 is N+1,
+    functor(C, F, N1),
+    copy_compound(C1, C, 1, 2, M),
+    arg(1, C, X).
 
-% Llamada recursiva para separar el resto de la oración
-separar(Parte, [oracion(X, O, [])|Resto], Resto2) :-
-    separar(Parte, [oracion(X, O, [])], Resto3),
-    separar(Resto3, Resto, Resto2).
+separar_args(_, oraciones(-), 0).
 
+separar_args(X, C, N) :-
+    arg(N, X, A),
+    \+ compound(A),
+    N1 is N-1,
+    separar_args(X, C2, N1),
+    concatenar_compound(oraciones(-), C2, C).
+
+separar_args(X, C, N) :-
+    arg(N, X, A),
+    separar(A, C1),
+    N1 is N-1,
+    separar_args(X, C2, N1),
+    concatenar_compound(C1, C2, C).
+
+
+copy_compound(_, _, ACTX, _, MAX) :- ACTX > MAX.
+
+copy_compound(X, Y, ACTX, ACTY, MAX) :-
+    ACTX =< MAX,
+    arg(ACTX, X, ARG),
+    arg(ACTY, Y, ARG),
+    ACTNX is ACTX + 1,
+    ACTNY is ACTY + 1,
+    copy_compound(X, Y, ACTNX, ACTNY, MAX).
+
+concatenar_compound(oraciones(-), oraciones(-), oraciones(-)).
+
+concatenar_compound(C, oraciones(-), C).
+
+concatenar_compound(oraciones(-), C, C).
+
+concatenar_compound(C, C1, C2) :-
+    functor(C, F, N),
+    functor(C1, F, N1),
+    N2 is N + N1,
+    functor(C2, F, N2),
+    copy_compound(C1, C2, 1, 1, N1),
+    N3 is N1 + 1,
+    copy_compound(C, C2, 1, N3, N).
