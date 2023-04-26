@@ -138,13 +138,15 @@ o_prueba(12, [el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirve,p
 o_prueba(13, [el,raton,que,cazo,el,gato,era,gris]).
 o_prueba(14, [el,hombre,que,vimos,ayer,era,mi,vecino]).
 
+traducir(DESDE, HASTA, O) :-
+	oracion(DESDE, X, O, []),
+	oracion(HASTA, X, Y, []),
+	write('Oracion en '), write(DESDE), write(': '), write(O), nl,
+	write('Oracion en '), write(HASTA), write(': '), write(Y), nl, nl.
+
 ejecutar_pruebas(INI, INI).
 ejecutar_pruebas(INI, FIN) :- 
     o_prueba(INI, O),
-	oracion(esp, X, O, []),
-	oracion(eng, X, Y, []),
-	write('Oracion en espagnol: '), write(O), nl,
-	write('Oracion en ingles: '), write(Y), nl,
-	nl,
+	traducir(esp, eng, O),
     INI2 is INI+1,
     ejecutar_pruebas(INI2, FIN).
