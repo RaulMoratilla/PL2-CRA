@@ -112,13 +112,71 @@ prep(para).
 prep(en).
 prep(por).
 
-aplanar_comp(comp(X), Y) :- aplanar_comp(X, Y).
-aplanar_comp(X, X) :- \+ compound(X).
-aplanar_comp(X, Y) :- compound(X), functor(X, F, N), functor(Y, F, N), aplanar_comp_args(N, X, Y).
-aplanar_comp_args(N, X, Y) :- N > 0, arg(N, X, Xn), aplanar_comp(Xn, Yn), arg(N, Y, Yn), N1 is N-1, aplanar_comp_args(N1, X, Y).
-aplanar_comp_args(0, _, _).
+aplanar_args(_, _, 0).
 
-% Reglas gramaticales
+aplanar_args(X, Y, N) :-
+    arg(N, X, ARGACT),
+    arg(N, Y, ARGAPL),
+    aplanar_comp(ARGACT, ARGAPL),
+    N1 is N-1,
+    aplanar_args(X, Y, N1).
+
+aplanar_comp(X, Y) :-
+    aplanar_iter(X, Y1, NACT, NAPL),
+    NACT =\= NAPL,
+    aplanar_comp(Y1, Y).
+
+aplanar_comp(X, Y) :-
+    aplanar_iter(X, Y1, NACT, NAPL),
+    NACT is NAPL,
+    functor(X, F, N),
+    functor(Y, F, N),
+    aplanar_args(Y1, Y, N).
+
+aplanar_iter(X, Y, NACT, NAPL) :-
+    functor(X, F, NACT),
+    args_aplanado(X, NACT, NAPL),
+    functor(Y, F, NAPL),
+    add_args(X, Y, 1, 1, NACT).
+
+args_aplanado(_, 0, 0).
+
+args_aplanado(X, NACT, NAPL) :-
+    NACT > 0,
+    N1 is NACT - 1,
+    args_aplanado(X, N1, NAPL1),
+    arg(NACT, X, ARG),
+    compound(ARG),
+    functor(ARG, comp, NSUM),
+    NAPL is NAPL1 + NSUM.
+
+args_aplanado(X, NACT, NAPL) :-
+    NACT > 0,
+    N1 is NACT - 1,
+    args_aplanado(X, N1, NAPL1),
+    NAPL is NAPL1 + 1.
+
+add_args(_, _, IX, _, NFIN) :- IX > NFIN.
+
+add_args(X, Y, IX, IY, NFIN) :-
+    IX =< NFIN,
+    arg(IX, X, ARG),
+    compound(ARG),
+    functor(ARG, comp, NADD),
+    add_args(ARG, Y, 1, IY, NADD),
+    IYN is IY + NADD,
+    IXN is IX + 1,
+    add_args(X, Y, IXN, IYN, NFIN).
+
+add_args(X, Y, IX, IY, NFIN) :-
+    IX =< NFIN,
+    arg(IX, X, ARG),
+    arg(IY, Y, ARG),
+    IXN is IX + 1,
+    IYN is IY + 1,
+    add_args(X, Y, IXN, IYN, NFIN).
+
+% Reglas Gramaticales
 
 oracion(X, O, Y) :- compuesta(X1, O, Y), aplanar_comp(X1, X).
 oracion(X, O, Y) :- simple(X1, O, Y), aplanar_comp(X1, X).
