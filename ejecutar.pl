@@ -2,7 +2,7 @@
 :-consult("draw.pl").
 :-consult("diccionarioESP.pl").
 :-consult("procesamiento.pl").
-:-consult("gramatica.pl")
+:-consult("gramatica.pl").
 
 % Oraciones en espanol
 o_prueba(1, [jose,es,moreno,y,maria,es,alta]).

@@ -212,7 +212,7 @@ separar(X, C) :-
     functor(C1, F, N),
     N1 is N+1,
     functor(C, F, N1),
-    copy_compound(C1, C, 1, 2, M),
+    copy_compound(C1, C, 1, 2, N),
     arg(1, C, X1).
 
 % Caso de que no haya subordinada dentro
