@@ -373,7 +373,7 @@ get_oracion(X, L) :-
 
 get_oracion(_, [], 0).
 
-% 
+% Caso de que N sea un compound
 get_oracion(X, L, N) :-
     N > 0,
     arg(N, X, A),
@@ -383,6 +383,7 @@ get_oracion(X, L, N) :-
     get_oracion(A, L3),
     append(L2, L3, L).
 
+% Caso de que N no sea un compound
 get_oracion(X, L, N) :-
     N > 0,
     arg(N, X, A),
