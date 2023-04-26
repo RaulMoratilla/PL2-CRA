@@ -1,11 +1,12 @@
 % APLANAR
 
 /**
- * Aplana cada uno de los N argumentos del compound
+ * Aplana el argumento N del compound
  * de X (todo lo que tenga comp(...)) y los mete en Y
  */
 aplanar_args(_, _, 0).
 
+% Caso de quue haya mas compounds dentro
 aplanar_args(X, Y, N) :-
     compound(X),
     arg(N, X, ARGACT),
@@ -15,6 +16,7 @@ aplanar_args(X, Y, N) :-
     N1 is N-1,
     aplanar_args(X, Y, N1).
     
+% Si no hay mas compounds dentro
 aplanar_args(X, Y, N) :-
     compound(X),
     arg(N, X, ARGACT),
@@ -28,11 +30,14 @@ aplanar_args(X, X, _).
  * Aplana el compound X (todo lo que tenga comp(...))
  * y lo devuelve en Y
  */
+
+% Si se puede seguir aplanando ese nivel continua (hasta que no cambie nada)
 aplanar_comp(X, Y) :-
     aplanar_iter(X, Y1, NACT, NAPL),
     NACT =\= NAPL,
     aplanar_comp(Y1, Y).
 
+% Si no se puede seguir aplanando ese nivel aplana los inferiores
 aplanar_comp(X, Y) :-
     aplanar_iter(X, Y1, NACT, NAPL),
     NACT is NAPL,
@@ -55,6 +60,7 @@ aplanar_iter(X, Y, NACT, NAPL) :-
  */
 args_aplanado(_, 0, 0).
 
+% Caso de que haya un comp(...) dentro
 args_aplanado(X, NACT, NAPL) :-
     NACT > 0,
     N1 is NACT - 1,
@@ -65,6 +71,7 @@ args_aplanado(X, NACT, NAPL) :-
     functor(ARG, comp, NSUM),
     NAPL is NAPL1 + NSUM.
 
+% Caso de que no haya mas comp(...) dentro pero si otros compounds
 args_aplanado(X, NACT, NAPL) :-
     NACT > 0,
     N1 is NACT - 1,
@@ -74,6 +81,7 @@ args_aplanado(X, NACT, NAPL) :-
     \+ compound(ARG),
     NAPL is NAPL1 + 1.
 
+% Caso de que no haya mas comp(...) ni otros compounds
 args_aplanado(X, NACT, NAPL) :-
     NACT > 0,
     N1 is NACT - 1,
@@ -90,6 +98,7 @@ args_aplanado(_, X, X) :-
  */
 add_args(_, _, IX, _, NFIN) :- IX > NFIN.
 
+% Caso de IX sea un comp(...)
 add_args(X, Y, IX, IY, NFIN) :-
     IX =< NFIN,
     arg(IX, X, ARG),
@@ -100,6 +109,7 @@ add_args(X, Y, IX, IY, NFIN) :-
     IXN is IX + 1,
     add_args(X, Y, IXN, IYN, NFIN).
 
+% Caso de que IX no sea un comp(...)
 add_args(X, Y, IX, IY, NFIN) :-
     IX =< NFIN,
     arg(IX, X, ARG),
@@ -331,6 +341,9 @@ get_oraciones(X, L, OACT) :-
     OACT2 is OACT-1,
     get_oraciones(X, L, OACT2).
 
+/**
+ * Obtiene del compound oracion(de cualquier tipo)(...) la oracion en una lista
+ */
 get_oracion(X, L) :-
     compound(X),
     functor(X, _, N),
@@ -357,6 +370,9 @@ get_oracion(X, L, N) :-
 
 % AUXILIARES
 
+/**
+ * Copia los argumentos de las posiciones ACTX a MAX de X a las posiciones desde ACTY de Y
+ */
 copy_compound(_, _, ACTX, _, MAX) :- ACTX > MAX.
 
 copy_compound(X, Y, ACTX, ACTY, MAX) :-
@@ -367,6 +383,9 @@ copy_compound(X, Y, ACTX, ACTY, MAX) :-
     ACTNY is ACTY + 1,
     copy_compound(X, Y, ACTNX, ACTNY, MAX).
 
+/**
+ * Concatena dos compounds
+ */
 concatenar_compound(oraciones(-), oraciones(-), oraciones(-)).
 
 concatenar_compound(C, oraciones(-), C).
