@@ -112,18 +112,34 @@ prep(para).
 prep(en).
 prep(por).
 
+/**
+ * Aplana cada uno de los N argumentos del compound X 
+ * (todo lo que tenga comp(...)) y los mete en Y
+ */
 aplanar_args(_, _, 0).
 
 aplanar_args(X, Y, N) :-
     compound(X),
     arg(N, X, ARGACT),
     arg(N, Y, ARGAPL),
+    compound(ARGACT),
     aplanar_comp(ARGACT, ARGAPL),
+    N1 is N-1,
+    aplanar_args(X, Y, N1).
+    
+aplanar_args(X, Y, N) :-
+    compound(X),
+    arg(N, X, ARGACT),
+    arg(N, Y, ARGACT),
     N1 is N-1,
     aplanar_args(X, Y, N1).
 
 aplanar_args(X, X, _).
 
+/**
+ * Aplana el compound X (todo lo que tenga comp(...))
+ * y lo devuelve en Y
+ */
 aplanar_comp(X, Y) :-
     aplanar_iter(X, Y1, NACT, NAPL),
     NACT =\= NAPL,
@@ -136,17 +152,27 @@ aplanar_comp(X, Y) :-
     functor(Y, F, N),
     aplanar_args(Y1, Y, N).
 
+/**
+ * Hace una iteracion de aplanar
+ * el compound X (todo lo que tenga comp(...))
+ * y lo devuelve en Y
+ */
 aplanar_iter(X, Y, NACT, NAPL) :-
     functor(X, F, NACT),
     args_aplanado(X, NACT, NAPL),
     functor(Y, F, NAPL),
     add_args(X, Y, 1, 1, NACT).
 
+
+/**
+ * Devuelve el numero de argumentos que tendra el compound aplanado
+ */
 args_aplanado(_, 0, 0).
 
 args_aplanado(X, NACT, NAPL) :-
     NACT > 0,
     N1 is NACT - 1,
+    compound(X),
     args_aplanado(X, N1, NAPL1),
     arg(NACT, X, ARG),
     compound(ARG),
@@ -156,9 +182,26 @@ args_aplanado(X, NACT, NAPL) :-
 args_aplanado(X, NACT, NAPL) :-
     NACT > 0,
     N1 is NACT - 1,
+    compound(X),
+    args_aplanado(X, N1, NAPL1),
+    arg(NACT, X, ARG),
+    \+ compound(ARG),
+    NAPL is NAPL1 + 1.
+
+args_aplanado(X, NACT, NAPL) :-
+    NACT > 0,
+    N1 is NACT - 1,
+    \+ compound(X),
     args_aplanado(X, N1, NAPL1),
     NAPL is NAPL1 + 1.
 
+args_aplanado(_, X, X) :- 
+    X > 0.
+
+/**
+ * Anade a Y todos los compounds de X que no sean comp(...)
+ * y los comp(...) los aplana y los anade a Y
+ */
 add_args(_, _, IX, _, NFIN) :- IX > NFIN.
 
 add_args(X, Y, IX, IY, NFIN) :-
@@ -181,8 +224,8 @@ add_args(X, Y, IX, IY, NFIN) :-
 
 % Reglas Gramaticales
 
-oracion(X, O, Y) :- compuesta(X, O, Y). %aplanar_comp(X1, X).
-oracion(X, O, Y) :- simple(X, O, Y). %aplanar_comp(X1, X).
+oracion(X, O, Y) :- compuesta(X1, O, Y), once(aplanar_comp(X1, X)).
+oracion(X, O, Y) :- simple(X1, O, Y), once(aplanar_comp(X1, X)).
 
 compuesta(ocm(OCM)) --> coordinada(OCM).
 
