@@ -115,11 +115,14 @@ prep(por).
 aplanar_args(_, _, 0).
 
 aplanar_args(X, Y, N) :-
+    compound(X),
     arg(N, X, ARGACT),
     arg(N, Y, ARGAPL),
     aplanar_comp(ARGACT, ARGAPL),
     N1 is N-1,
     aplanar_args(X, Y, N1).
+
+aplanar_args(X, X, _).
 
 aplanar_comp(X, Y) :-
     aplanar_iter(X, Y1, NACT, NAPL),
@@ -178,8 +181,8 @@ add_args(X, Y, IX, IY, NFIN) :-
 
 % Reglas Gramaticales
 
-oracion(X, O, Y) :- compuesta(X1, O, Y), aplanar_comp(X1, X).
-oracion(X, O, Y) :- simple(X1, O, Y), aplanar_comp(X1, X).
+oracion(X, O, Y) :- compuesta(X, O, Y). %aplanar_comp(X1, X).
+oracion(X, O, Y) :- simple(X, O, Y). %aplanar_comp(X1, X).
 
 compuesta(ocm(OCM)) --> coordinada(OCM).
 
