@@ -1,4 +1,5 @@
 :-consult("draw.pl").
+%:-consult("diccionarioESP.pl").
 
 %Diccionario
 
@@ -112,10 +113,6 @@ prep(para).
 prep(en).
 prep(por).
 
-/**
- * Aplana cada uno de los N argumentos del compound X 
- * (todo lo que tenga comp(...)) y los mete en Y
- */
 aplanar_args(_, _, 0).
 
 aplanar_args(X, Y, N) :-
@@ -136,10 +133,6 @@ aplanar_args(X, Y, N) :-
 
 aplanar_args(X, X, _).
 
-/**
- * Aplana el compound X (todo lo que tenga comp(...))
- * y lo devuelve en Y
- */
 aplanar_comp(X, Y) :-
     aplanar_iter(X, Y1, NACT, NAPL),
     NACT =\= NAPL,
@@ -152,21 +145,12 @@ aplanar_comp(X, Y) :-
     functor(Y, F, N),
     aplanar_args(Y1, Y, N).
 
-/**
- * Hace una iteracion de aplanar
- * el compound X (todo lo que tenga comp(...))
- * y lo devuelve en Y
- */
 aplanar_iter(X, Y, NACT, NAPL) :-
     functor(X, F, NACT),
     args_aplanado(X, NACT, NAPL),
     functor(Y, F, NAPL),
     add_args(X, Y, 1, 1, NACT).
 
-
-/**
- * Devuelve el numero de argumentos que tendra el compound aplanado
- */
 args_aplanado(_, 0, 0).
 
 args_aplanado(X, NACT, NAPL) :-
@@ -198,10 +182,6 @@ args_aplanado(X, NACT, NAPL) :-
 args_aplanado(_, X, X) :- 
     X > 0.
 
-/**
- * Anade a Y todos los compounds de X que no sean comp(...)
- * y los comp(...) los aplana y los anade a Y
- */
 add_args(_, _, IX, _, NFIN) :- IX > NFIN.
 
 add_args(X, Y, IX, IY, NFIN) :-
@@ -237,7 +217,7 @@ buscar_subordinada(X, N, N1) :-
     (N2 is N + 1,
     buscar_subordinada(X, N2, N1))).
 
-ajustar_compuestas_args(X, X, N, M) :- N > M.
+ajustar_compuestas_args(_, _, N, M) :- N > M.
 
 ajustar_compuestas_args(X, Y, N, M) :-
     N =< M,
@@ -346,12 +326,73 @@ ejecutar_pruebas(INI, FIN) :-
     o_prueba(INI, O),
     oracion(X, O, []),
     draw(X),
+    separar(X, C),
+    formatear_oraciones(C, C1),
+    write(C1), nl,
     INI2 is INI+1,
     ejecutar_pruebas(INI2, FIN).
 
+formatear_oraciones(X, L) :-
+    functor(X, _, N),
+    get_oraciones(X, L, N).
+
+get_oraciones(_, [], 0).
+
+get_oraciones(X, L, OACT) :-
+    OACT > 0,
+    arg(OACT, X, A),
+    A \= -,
+    OACT2 is OACT-1,
+    get_oraciones(X, L1, OACT2),
+    get_oracion(A, O),
+    append(L1, [O], L).
+
+get_oraciones(X, L, OACT) :-
+    OACT > 0,
+    arg(OACT, X, A),
+    A = -,
+    OACT2 is OACT-1,
+    get_oraciones(X, L, OACT2).
+
+get_oracion(X, L) :-
+    compound(X),
+    functor(X, _, N),
+    get_oracion(X, L, N).
+
+get_oracion(_, [], 0).
+
+get_oracion(X, L, N) :-
+    N > 0,
+    arg(N, X, A),
+    compound(A),
+    N2 is N-1,
+    get_oracion(X, L2, N2),
+    get_oracion(A, L3),
+    append(L2, L3, L).
+
+get_oracion(X, L, N) :-
+    N > 0,
+    arg(N, X, A),
+    \+ compound(A),
+    N2 is N-1,
+    get_oracion(X, L2, N2),
+    append(L2, [A], L).
+    
 
 separar(X, oraciones(-)) :-
     \+ compound(X).
+
+separar(X, C) :-
+    compound(X),
+    functor(X, ocm, M),
+    buscar_subordinada(X, 1, M),
+    separar_args(X, C1, M),
+    quitar_subordinada(X, X1, 1, M),
+    functor(C1, F, N),
+    N1 is N+1,
+    functor(C, F, N1),
+    copy_compound(C1, C, 1, 2, M),
+    arg(1, C, X1).
 
 separar(X, C) :-
     compound(X),
@@ -368,6 +409,33 @@ separar(X, C) :-
     functor(C, F, N1),
     copy_compound(C1, C, 1, 2, M),
     arg(1, C, X).
+
+quitar_subordinada(X, X1, N, M) :-
+    N =< M,
+    functor(X, F, M),
+    arg(N, X, A),
+    compound(A),
+    functor(A, or, _),
+    TAM is M-1,
+    functor(X1, F, TAM),
+    copy_compound(X, X1, 1, 1, N-1),
+    copy_compound(X, X1, N+1, N, M).
+
+quitar_subordinada(X, X1, N, M) :-
+    N =< M,
+    functor(X, F, M),
+    arg(N, X, A),
+    compound(A),
+    functor(A, F1, TAM),
+    F1 \= os,
+    N1 is N+1,
+    ((quitar_subordinada(A, A1, 1, TAM),
+    functor(X1, F, M),
+    arg(N, X1, A1),
+    copy_compound(X, X1, N1, N1, M),
+    N2 is N-1,
+    copy_compound(X, X1, 1, 1, N2));
+    quitar_subordinada(X, X1, N1, M)).
 
 separar_args(_, oraciones(-), 0).
 
