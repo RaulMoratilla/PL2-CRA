@@ -252,3 +252,22 @@ ejecutar_pruebas(INI, FIN) :-
     draw(X),
     INI2 is INI+1,
     ejecutar_pruebas(INI2, FIN).
+
+
+
+% Regla base: cuando no hay más conjunciones en la oración
+separar(oracion(X, O, []), [oracion(X, O, [])], []).
+
+% Regla general: separar la oración en dos partes en función de la conjunción más a la derecha
+separar(oracion(X, O, Y), [oracion(X, O, [])], [oracion(X, O, [], Parte2)|Resto]) :-
+    functor(Conj, conj, _),
+    separar(Parte2, Resto).
+    
+% Si no hay más conjunciones, la lista de oraciones no se modifica
+separar(Parte, [oracion(X, O, [])], []).
+
+% Llamada recursiva para separar el resto de la oración
+separar(Parte, [oracion(X, O, [])|Resto], Resto2) :-
+    separar(Parte, [oracion(X, O, [])], Resto3),
+    separar(Resto3, Resto, Resto2).
+
