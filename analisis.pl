@@ -237,13 +237,22 @@ buscar_subordinada(X, N, N1) :-
     (N2 is N + 1,
     buscar_subordinada(X, N2, N1))).
 
-ajustar_compuestas_args(_, _, N, N).
+ajustar_compuestas_args(X, X, N, M) :- N > M.
 
 ajustar_compuestas_args(X, Y, N, M) :-
+    N =< M,
     arg(N, X, ARG),
     compound(ARG),
     ajustar_compuestas(ARG, Y1),
     arg(N, Y, Y1),
+    N1 is N + 1,
+    ajustar_compuestas_args(X, Y, N1, M).
+
+ajustar_compuestas_args(X, Y, N, M) :-
+    N =< M,
+    arg(N, X, ARG),
+    \+ compound(ARG),
+    arg(N, Y, ARG),
     N1 is N + 1,
     ajustar_compuestas_args(X, Y, N1, M).
 
@@ -256,6 +265,7 @@ ajustar_compuestas(X, Y) :-
     buscar_subordinada(X, 1, N),
     functor(Y1, ocm, N),
     copy_compound(X, Y1, 1, 1, N),
+    functor(Y, ocm, N),
     ajustar_compuestas_args(Y1, Y, 1, N).
 
 ajustar_compuestas(X, Y) :-
@@ -267,8 +277,8 @@ ajustar_compuestas(X, Y) :-
 
 % Reglas Gramaticales
 
-oracion(X, O, Y) :- compuesta(X1, O, Y), once(aplanar_comp(X1, X)).%, ajustar_compuestas(X2, X).
-oracion(X, O, Y) :- simple(X1, O, Y), once(aplanar_comp(X1, X)).%, ajustar_compuestas(X2, X).
+oracion(X, O, Y) :- compuesta(X1, O, Y), once(aplanar_comp(X1, X2)), ajustar_compuestas(X2, X).
+oracion(X, O, Y) :- simple(X1, O, Y), once(aplanar_comp(X1, X2)), ajustar_compuestas(X2, X).
 
 compuesta(ocm(OCM)) --> coordinada(OCM).
 
