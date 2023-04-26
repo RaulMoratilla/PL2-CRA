@@ -550,7 +550,7 @@ adv(poco).
 adv(ayer).
 adv(junto).
 adv(mucho).
-adv(etc.).
+adv(etc).
 adv(cuanto).
 adv(ademas).
 adv(quien).

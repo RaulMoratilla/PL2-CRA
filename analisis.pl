@@ -1,117 +1,5 @@
 :-consult("draw.pl").
-%:-consult("diccionarioESP.pl").
-
-%Diccionario
-
-determinante(det(X)) --> [X], {det(X)}.
-det(el).
-det(la).
-det(las).
-det(un).
-det(una).
-det(mi).
-
-nombre(n(X)) --> [X], {n(X)}.
-%nombre(n(X)) --> nombre_propio(n(X)).
-n(hombre).
-n(mujer).
-n(manzana).
-n(manzanas).
-n(gato).
-n(raton).
-n(alumno).
-n(universidad).
-n(juan).
-n(maria).
-n(jose).
-n(hector).
-n(irene).
-n(filosofia).
-n(derecho).
-n(cafe).
-n(mesa).
-n(periodico).
-n(patatas).
-n(cerveza).
-n(paella).
-n(novela).
-n(zumo).
-n(procesador).
-n(textos).
-n(herramienta).
-n(documentos).
-n(raton).
-n(gato).
-n(vecino).
-n(escribir).
-n(rocodromo).
-n(tardes).
-
-nombre_propio(np(X)) --> [X], {np(X)}.
-np(juan).
-np(maria).
-np(jose).
-np(hector).
-np(irene).
-
-verbo(v(X)) --> [X], {v(X)}.
-v(ama).
-v(come).
-v(estudia).
-v(bebe).
-v(es).
-v(toma).
-v(recoge).
-v(lee).
-v(comen).
-v(beben).
-v(prefiere).
-v(canta).
-v(salta).
-v(escala).
-v(sirve).
-v(cazo).
-v(vimos).
-v(era).
-
-adjetivo(adj(X)) --> [X], {adj(X)}.
-adj(roja).
-adj(rojas).
-adj(negro).
-adj(grande).
-adj(gris).
-adj(pequeno).
-adj(alta).
-adj(moreno).
-adj(fritas).
-adj(potente).
-adj(lento).
-adj(agil).
-adj(delicado).
-
-conjuncion(conj(X)) --> [X], {conj(X)}.
-conj(y).
-conj(e).
-conj(ni).
-conj(pero).
-conj(aunque).
-conj(mientras).
-
-adverbio(adv(X)) --> [X], {adv(X)}.
-adv(que).
-adv(cuando).
-adv(donde).
-adv(muy).
-adv(bastante).
-adv(ayer).
-adv(solamente).
-
-preposicion(prep(X)) --> [X], {prep(X)}.
-prep(a).
-prep(de).
-prep(para).
-prep(en).
-prep(por).
+:-consult("diccionarioESP.pl").
 
 aplanar_args(_, _, 0).
 
@@ -213,6 +101,7 @@ buscar_subordinada(X, N, N1) :-
     ((compound(ARG),
     functor(ARG, F, M),
     F \= or,
+    F \= oc,
     buscar_subordinada(ARG, 1, M));
     (N2 is N + 1,
     buscar_subordinada(X, N2, N1))).
@@ -334,7 +223,32 @@ ejecutar_pruebas(INI, FIN) :-
 
 formatear_oraciones(X, L) :-
     functor(X, _, N),
-    get_oraciones(X, L, N).
+    get_oraciones(X, L1, N),
+    poner_sujeto(L1, L, []).
+
+buscar_sujeto(O, O) :-
+    functor(O, gn, _).
+
+buscar_sujeto(O, SUJ) :-
+    functor(O, F, _),
+    F \= gv,
+    arg(1, O, A),
+    buscar_sujeto(A, SUJ).
+
+get_sujeto(O, SUJ) :-
+    oracion(X, O, []),
+    buscar_sujeto(X, SUJ).
+
+poner_sujeto([], [], _).
+
+poner_sujeto([O|RO], [O|ROS], _) :-
+    get_sujeto(O, SUJ1),
+    get_oracion(SUJ1, SUJL),
+    poner_sujeto(RO, ROS, SUJL).
+
+poner_sujeto([O|RO], [OS|ROS], SUJ) :-
+    append(SUJ, O, OS),
+    poner_sujeto(RO, ROS, SUJ).
 
 get_oraciones(_, [], 0).
 
