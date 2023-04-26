@@ -1,44 +1,45 @@
 
 :-consult("diccionarioTRA.pl").
 
-% Reglas gramaticales
+% Reglas Gramaticales
 
+% Oracion
 oracion(esp, X, O, Y) :- compuesta(esp, X, O, Y).
 oracion(esp, X, O, Y) :- simple(esp, X, O, Y).
 
 oracion(eng, X, O, Y) :- compuesta(eng, X, O, Y).
 oracion(eng, X, O, Y) :- simple(eng, X, O, Y).
 
-%%%%
 
+% Compuesta
 compuesta(esp, ocm(OCM)) --> coordinada(esp, OCM).
 
 compuesta(eng, ocm(OCM)) --> coordinada(eng, OCM).
 
-%%%%
 
+% Simple
 simple(esp, os(GN, GV)) --> g_nominal(esp, GN), g_verbal(esp, GV).
 simple(esp, os(GV)) --> g_verbal(esp, GV).
 
 simple(eng, os(GN, GV)) --> g_nominal(eng, GN), g_verbal(eng, GV).
 simple(eng, os(GV)) --> g_verbal(eng, GV).
 
-%%%%
 
+% Coordinada
 coordinada(esp, oc(O,CONJ,O2)) --> simple(esp, O), conjuncion(esp, CONJ), simple(esp, O2).
 coordinada(esp, oc(O,CONJ,O2)) --> simple(esp, O), conjuncion(esp, CONJ), compuesta(esp, O2).
 
 coordinada(eng, oc(O,CONJ,O2)) --> simple(eng, O), conjuncion(eng, CONJ), simple(eng, O2).
 coordinada(eng, oc(O,CONJ,O2)) --> simple(eng, O), conjuncion(eng, CONJ), compuesta(eng, O2).
 
-%%%%
 
+%Subordinada
 subordinada(esp, or(ADV, O)) --> adverbio(esp, ADV), oracion(esp, O).
 
 subordinada(eng, or(ADV, O)) --> adverbio(eng, ADV), oracion(eng, O).
 
-%%%
 
+% Complementos
 complementos(esp, comp(SUB)) --> subordinada(esp, SUB).
 complementos(esp, comp(GADJ)) --> g_adjetival(esp, GADJ).
 complementos(esp, comp(GADV)) --> g_adverbial(esp, GADV).
@@ -65,16 +66,16 @@ complementos(eng, comp(GPREP, COMP)) --> g_preposicional(eng, GPREP), complement
 complementos(eng, comp(GN, COMP)) --> g_nominal(eng, GN), complementos(eng, COMP).
 complementos(eng, comp(CONJ, GN, COMP)) --> conjuncion(eng, CONJ), g_nominal(eng, GN), complementos(eng, COMP).
 
-%%%%
 
+% Grupos verbales
 g_verbal(esp, gv(V, COMP)) --> verbo(esp, V), complementos(esp, COMP).
 g_verbal(esp, gv(V)) --> verbo(esp, V).
 
 g_verbal(eng, gv(V, COMP)) --> verbo(eng, V), complementos(eng, COMP).
 g_verbal(eng, gv(V)) --> verbo(eng, V).
 
-%%%%
 
+% Grupos nominales
 g_nominal(esp, gn(N, COMP)) --> nombre(esp, N), complementos(esp, COMP).
 g_nominal(esp, gn(N)) --> nombre(esp, N).
 g_nominal(esp, gn(DET, N, COMP)) --> determinante(esp, DET), nombre(esp, N), complementos(esp, COMP).
@@ -85,8 +86,8 @@ g_nominal(eng, gn(N)) --> nombre(eng, N).
 g_nominal(eng, gn(DET, N, COMP)) --> determinante(eng, DET), nombre(eng, N), complementos(eng, COMP).
 g_nominal(eng, gn(DET, N)) --> determinante(eng, DET), nombre(eng, N).
 
-%%%%
 
+% Grupos adjetivales
 g_adjetival(esp, gadj(A)) --> adjetivo(esp, A).
 g_adjetival(esp, gadj(GADJ,GADJ2)) --> adjetivo(esp, GADJ), g_adjetival(esp, GADJ2).
 g_adjetival(esp, gadj(GADJ,GN)) --> adjetivo(esp, GADJ), g_nominal(esp, GN).
@@ -101,8 +102,8 @@ g_adjetival(eng, gadj(GADJ,GP)) --> adjetivo(eng, GADJ), g_preposicional(eng, GP
 g_adjetival(eng, gadj(ADV,GADJ)) --> adverbio(eng, ADV), g_adjetival(eng, GADJ).
 g_adjetival(eng, gadj(GADJ,CONJ,GADJ2)) --> adjetivo(eng, GADJ), conjuncion(eng, CONJ), g_adjetival(eng, GADJ2).
 
-%%%%
 
+% Grupos adverbiales
 g_adverbial(esp, gadv(ADV)) --> adverbio(esp, ADV).
 g_adverbial(esp, gadv(GADV,GADV2)) --> adverbio(esp, GADV), g_adverbial(esp, GADV2).
 g_adverbial(esp, gadv(GADV,GN)) --> adverbio(esp, GADV), g_preposicional(esp, GN).
@@ -111,8 +112,8 @@ g_adverbial(eng, gadv(ADV)) --> adverbio(eng, ADV).
 g_adverbial(eng, gadv(GADV,GADV2)) --> adverbio(eng, GADV), g_adverbial(eng, GADV2).
 g_adverbial(eng, gadv(GADV,GN)) --> adverbio(eng, GADV), g_preposicional(eng, GN).
 
-%%%%
 
+% Grupos preposicionales
 g_preposicional(esp, gp(P,GN)) --> preposicion(esp, P), g_nominal(esp, GN).
 g_preposicional(esp, gp(P,GADJ)) --> preposicion(esp, P), g_adjetival(esp, GADJ).
 g_preposicional(esp, gp(P,GADV)) --> preposicion(esp, P), g_adverbial(esp, GADV).
@@ -121,8 +122,8 @@ g_preposicional(eng, gp(P,GN)) --> preposicion(eng, P), g_nominal(eng, GN).
 g_preposicional(eng, gp(P,GADJ)) --> preposicion(eng, P), g_adjetival(eng, GADJ).
 g_preposicional(eng, gp(P,GADV)) --> preposicion(eng, P), g_adverbial(eng, GADV).
 
-%%%%
 
+% Oraciones en espanol
 o_pruebaESP(1, [jose,es,moreno,y,maria,es,alta]).
 o_pruebaESP(2, [jose,estudia,filosofia,pero,maria,estudia,derecho]).
 o_pruebaESP(3, [maria,toma,un,cafe,mientras,jose,recoge,la,mesa]).
@@ -138,6 +139,7 @@ o_pruebaESP(12, [el,procesador,de,textos,es,una,herramienta,muy,potente,que,sirv
 o_pruebaESP(13, [el,raton,que,cazo,el,gato,era,gris]).
 o_pruebaESP(14, [el,hombre,que,vimos,ayer,era,mi,vecino]).
 
+% Oraciones en ingles
 o_pruebaENG(1, [joseph,is,brown,and,mary,is,tall]).
 o_pruebaENG(2, [joseph,studies,philosophy,but,mary,studies,law]).
 o_pruebaENG(3, [mary,takes,a,coffee,while,joseph,collect,the,table]).
@@ -153,12 +155,18 @@ o_pruebaENG(12, [the,processor,of,texts,is,a,tool,very,powerful,that,serves,to,w
 o_pruebaENG(13, [the,mouse,that,hunted,the,cat,was,gray]).
 o_pruebaENG(14, [the,man,that,saw,yesterday,was,my,neighbor]).
 
+/**
+ * Traduce una oracion de un idioma a otro
+ */
 traducir(DESDE, HASTA, O) :-
 	oracion(DESDE, X, O, []),
 	oracion(HASTA, X, Y, []),
 	write('Oracion en '), write(DESDE), write(': '), write(O), nl,
 	write('Oracion en '), write(HASTA), write(': '), write(Y), nl, nl.
 
+/**
+ * Traduce todas las oraciones de prueba de espanol a ingles
+ */
 ejecutar_pruebasESP(INI, INI).
 ejecutar_pruebasESP(INI, FIN) :- 
 	o_pruebaESP(INI, O),
@@ -166,6 +174,9 @@ ejecutar_pruebasESP(INI, FIN) :-
 	INI2 is INI+1,
 	ejecutar_pruebasESP(INI2, FIN).
 
+/**
+ * Traduce todas las oraciones de prueba de ingles a espanol
+ */
 ejecutar_pruebasENG(INI, INI).
 ejecutar_pruebasENG(INI, FIN) :- 
 	o_pruebaENG(INI, O),

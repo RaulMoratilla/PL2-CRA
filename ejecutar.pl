@@ -1,8 +1,10 @@
+% Consults
 :-consult("draw.pl").
 :-consult("diccionarioESP.pl").
 :-consult("procesamiento.pl").
 :-consult("gramatica.pl")
 
+% Ejecucion
 ejecutar_pruebas(INI, INI).
 ejecutar_pruebas(INI, FIN) :- 
     o_prueba(INI, O),

@@ -1,5 +1,6 @@
-%Diccionario
+% Diccionario ESP
 
+% Determinantes
 determinante(det(X)) --> [X], {det(X)}.
 det(el).
 det(la).
@@ -49,6 +50,7 @@ det(algun).
 det(estas).
 det(muchas).
 
+% Sustantivos
 nombre(n(X)) --> [X], {n(X)}.
 n(hombre).
 n(mujer).
@@ -359,6 +361,7 @@ n(propia).
 n(tener).
 n(sobre).
 
+% Verbos
 verbo(v(X)) --> [X], {v(X)}.
 v(ama).
 v(come).
@@ -437,6 +440,7 @@ v(va).
 v(sea).
 v(tenia).
 
+% Adjetivos
 adjetivo(adj(X)) --> [X], {adj(X)}.
 adj(roja).
 adj(rojas).
@@ -491,6 +495,7 @@ adj(mal).
 adj(necesario).
 adj(nuevas).
 
+% Conjunciones
 conjuncion(conj(X)) --> [X], {conj(X)}.
 conj(y).
 conj(e).
@@ -501,6 +506,7 @@ conj(o).
 conj(sino).
 conj(mientras).
 
+% Adverbios
 adverbio(adv(X)) --> [X], {adv(X)}.
 adv(que).
 adv(cuando).
@@ -568,6 +574,7 @@ adv(aqui).
 adv(quienes).
 adv(nunca).
 
+% Prepocisiones
 preposicion(prep(X)) --> [X], {prep(X)}.
 prep(a).
 prep(de).
