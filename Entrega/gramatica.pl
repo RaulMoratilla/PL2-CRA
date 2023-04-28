@@ -3,6 +3,8 @@
 % Oraciones
 oracion(X, O, Y) :- compuesta(X1, O, Y), once(aplanar_comp(X1, X2)), ajustar_compuestas(X2, X).
 oracion(X, O, Y) :- simple(X1, O, Y), once(aplanar_comp(X1, X2)), ajustar_compuestas(X2, X).
+oracion(X, O, Y) :- compuesta(X, O, Y), once(aplanar_comp(X1, X2)), ajustar_compuestas(X2, X).
+oracion(X, O, Y) :- simple(X, O, Y), once(aplanar_comp(X1, X2)), ajustar_compuestas(X2, X).
 
 % Compuesta
 compuesta(ocm(OCM)) --> coordinada(OCM).
